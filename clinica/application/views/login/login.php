@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Login - Bootstrap Admin Template</title>
+        <title><?php echo $this->config->item('name_company'); ?></title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -41,22 +41,25 @@
 
             <div class="content clearfix">
 
-                <form action="<?php echo base_url('login/ingresar') ?>" method="post">
+                <form action="<?php echo base_url('login') ?>" method="post">
 
                     <h1>Login Empleados</h1>       
 
+                    <?php
+                    echo $custom_message;
+                    ?>
                     <div class="login-fields">
 
                         <p>Digite sus Credenciales</p>
 
                         <div class="field">
-                            <label for="username">Usuario</label>
-                            <input type="text" id="username" name="username" value="" placeholder="Usuario" class="login username-field" />
+                            <label for="USUARIO">Usuario</label>
+                            <input type="text" id="USUARIO" name="USUARIO" value="" placeholder="Usuario" class="login username-field" />
                         </div> <!-- /field -->
 
                         <div class="field">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" value="" placeholder="Password" class="login password-field"/>
+                            <label for="PASSWORD">Password:</label>
+                            <input type="password" id="PASSWORD" name="PASSWORD" value="" placeholder="Password" class="login password-field"/>
                         </div> <!-- /password -->
 
                     </div> <!-- /login-fields -->

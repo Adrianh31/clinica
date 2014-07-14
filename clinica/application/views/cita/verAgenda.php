@@ -21,7 +21,7 @@
         <h3 id="myModalLabel">Editar Cita</h3>
     </div>
     <div class="modal-body">
-      
+
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
@@ -29,6 +29,15 @@
     </div>
 </div>
 
+
+<form action="<?php echo base_url('cita/establecerCita') ?>" method="POST" id="fomNuevaCita">
+    <input type="hidden" name="citaDia" id="citaDia"/>
+    <input type="hidden" name="citaHora" id="citaHora"/>
+</form>
+
+<form action="<?php echo base_url('cita/establecerCita') ?>" method="POST" id="fomEditarCita">
+    <input type="hidden" name="citaId" id="citaId"/>
+</form>
 
 
 <script>
@@ -159,19 +168,70 @@
 
 
     $(document).ready(function() {
+
         var date = new Date();
         var d = date.getDate();
-        var m = date.getMonth();
+        //var m = date.getMonth();
         var y = date.getFullYear();
 
-        var calendar = $('#calendar').fullCalendar({
-            editable: true,
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'agendaWeek,agendaDay'
+
+        $('#calendar').fullCalendar({
+            eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
+       
+        /* if (dayDelta >= 0) {
+                    dayDelta = "+" + dayDelta;
+                }
+                if (minuteDelta >= 0) {
+                    minuteDelta = "+" + minuteDelta;
+                }
+                $.post("../events/mover/" + event.id + "/" + dayDelta + "/" + minuteDelta + "/" + allDay);
+         */
+
             },
-            events: "<?php echo base_url('cita/getCitas'); ?>",
+            eventResize: function(event, dayDelta, minuteDelta, revertFunc) {
+                if (dayDelta >= 0) {
+                    dayDelta = "+" + dayDelta;
+                }
+                if (minuteDelta >= 0) {
+                    minuteDelta = "+" + minuteDelta;
+                }
+                $.post("../events/resize/" + event.id + "/" + dayDelta + "/" + minuteDelta);
+            },
+            dayClick: function(date, allDay, jsEvent, view) {
+                var check = $.fullCalendar.formatDate(date, 'yyyy-MM-dd');
+                var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+                if (check < today) {
+                    alert("No es posible crear citas para dias pasados .");
+                }
+                else
+                {
+                    if ("../events/agregar/") {
+                        //there are different names for view.name the options are: agendaWeek, month, agendaDay 
+                        if (view.name == 'month') {
+                            $(this).css('background-color', '#00ba8b');
+                        }
+
+                        if (view.name == 'agendaWeek' || view.name == 'agendaDay') {
+                            var element = jsEvent.currentTarget;
+                            $(element).css('background-color', '#00ba8b');
+                        }
+
+                        var diaCita = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
+                        var horaCita = $.fullCalendar.formatDate(date, "HH:mm");
+                        $("#citaDia").val(diaCita);
+                        $("#citaHora").val(horaCita);
+                        $("#fomNuevaCita").submit();
+                        return true;
+                    }
+                }
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+                var idCita = calEvent.id;
+                $("#citaId").val(idCita);
+                $("#fomEditarCita").submit();
+                return true;
+            },
+            events: "<?php echo base_url('cita/listaCitas'); ?>",
             // Convert the allDay from string to boolean
             eventRender: function(event, element, view) {
                 if (event.allDay === 'true') {
@@ -180,71 +240,110 @@
                     event.allDay = false;
                 }
             },
-            selectable: true,
-            selectHelper: true,
-            select: function(start, end, allDay) {
-                var title = prompt('Event Title:');
-                var url = prompt('Type Event url, if exits:');
-                if (title) {
-                    var start = $.fullCalendar.formatDate(start, "yyyy-MM-dd HH:mm:ss");
-                    var end = $.fullCalendar.formatDate(end, "yyyy-MM-dd HH:mm:ss");
-                    $.ajax({
-                        url: 'http://localhost:8888/fullcalendar/add_events.php',
-                        data: 'title=' + title + '&start=' + start + '&end=' + end + '&url=' + url,
-                        type: "POST",
-                        success: function(json) {
-                            alert('Added Successfully');
-                        }
-                    });
-                    calendar.fullCalendar('renderEvent',
-                            {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            },
-                    true // make the event "stick"
-                            );
-                }
-                calendar.fullCalendar('unselect');
+            defaultView: 'month',
+            minTime: '8:00',
+            maxTime: '18:00',
+            hiddenDays: [0],
+            allDaySlot: false,
+            header: {
+                left: 'prev,next,today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
             },
-            editable: true,
-                    eventDrop: function(event, delta) {
-                        var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
-                        var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
-                        $.ajax({
-                            url: '<?php echo base_url('cita/actualizarCita'); ?>',
-                            data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
-                            type: "POST",
-                            success: function(json) {
-                                alert("Updated Successfully");
-                            }
-                        });
-                    },
-            eventResize: function(event) {
-                var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
-                var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
-                $.ajax({
-                    url: 'http://localhost:8888/fullcalendar/updateC.php',
-                    data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
-                    type: "POST",
-                    success: function(json) {
-                        alert("Updated Successfully");
-                    }
-                });
-
-            },
-            eventClick: function(event) {
-                var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
-                var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
-
-                console.log(event);
-                $('#modalCita').modal('show');
-                $("#FECHA_INICIO").val(start);
-                $("#FECHA_FIN").val(end);
-                $("#MOTIVO").val(event.title);                
-            },
+            editable: false,
+            slotMinutes: 30,
         });
+
+
+        /*var date = new Date();
+         var d = date.getDate();
+         var m = date.getMonth();
+         var y = date.getFullYear();
+         
+         var calendar = $('#calendar').fullCalendar({
+         editable: true,
+         minTime: 8,
+         maxTime: 18,
+         hiddenDays:[0,1],
+         header: {
+         left: 'prev,next today',
+         center: 'title',
+         right: 'agendaWeek,agendaDay'
+         },
+         // events: "<?php echo base_url('cita/getCitas'); ?>",
+         // Convert the allDay from string to boolean
+         eventRender: function(event, element, view) {
+         if (event.allDay === 'true') {
+         event.allDay = true;
+         } else {
+         event.allDay = false;
+         }
+         },
+         selectable: true,
+         selectHelper: true,
+         select: function(start, end, allDay) {
+         var title = prompt('Event Title:');
+         var url = prompt('Type Event url, if exits:');
+         if (title) {
+         var start = $.fullCalendar.formatDate(start, "yyyy-MM-dd HH:mm:ss");
+         var end = $.fullCalendar.formatDate(end, "yyyy-MM-dd HH:mm:ss");
+         $.ajax({
+         url: 'http://localhost:8888/fullcalendar/add_events.php',
+         data: 'title=' + title + '&start=' + start + '&end=' + end + '&url=' + url,
+         type: "POST",
+         success: function(json) {
+         alert('Added Successfully');
+         }
+         });
+         calendar.fullCalendar('renderEvent',
+         {
+         title: title,
+         start: start,
+         end: end,
+         allDay: allDay
+         },
+         true // make the event "stick"
+         );
+         }
+         calendar.fullCalendar('unselect');
+         },
+         editable: true,
+         eventDrop: function(event, delta) {
+         var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+         var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+         $.ajax({
+         url: '<?php echo base_url('cita/actualizarCita'); ?>',
+         data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
+         type: "POST",
+         success: function(json) {
+         alert("Updated Successfully");
+         }
+         });
+         },
+         eventResize: function(event) {
+         var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+         var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+         $.ajax({
+         url: 'http://localhost:8888/fullcalendar/updateC.php',
+         data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
+         type: "POST",
+         success: function(json) {
+         alert("Updated Successfully");
+         }
+         });
+         
+         },
+         eventClick: function(event) {
+         var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+         var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+         
+         console.log(event);
+         $('#modalCita').modal('show');
+         $("#FECHA_INICIO").val(start);
+         $("#FECHA_FIN").val(end);
+         $("#MOTIVO").val(event.title);                
+         },
+         });*/
 
     });
 

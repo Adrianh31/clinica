@@ -27,6 +27,11 @@ $config = array(
             'rules' => 'required|trim|xss_clean'
         ),
         array(
+            'field' => 'OCUPACION',
+            'label' => 'OCUPACION',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
             'field' => 'NOMBRE_PADRE',
             'label' => 'NOMBRE_PADRE',
             'rules' => 'trim|xss_clean'
@@ -37,28 +42,89 @@ $config = array(
             'rules' => 'trim|xss_clean'
         ),
         array(
-            'field' => 'TELEFONO_FIJO',
-            'label' => 'TELEFONO_FIJO',
-            'rules' => 'trim|min_length[8]|xss_clean'
-        ),
-        array(
-            'field' => 'TELEFONO_MOVIL',
-            'label' => 'TELEFONO_MOVIL',
+            'field' => 'TELEFONO',
+            'label' => 'TELEFONO',
             'rules' => 'trim|min_length[8]|xss_clean'
         ),
         array(
             'field' => 'CORREO_ELECTRONICO',
             'label' => 'CORREO_ELECTRONICO',
-            'rules' => 'trim|valid_email|is_unique[paciente.CORREO_ELECTRONICO]|xss_clean'
+            'rules' => 'trim|valid_email|xss_clean'
         ))
     , 'consulta' => array(array(
-            'field' => 'ID_TIPO_CONSULTA',
-            'label' => 'ID_TIPO_CONSULTA',
+            'field' => 'OBSERVACIONES',
+            'label' => 'OBSERVACIONES',
             'rules' => 'required|trim|xss_clean'
         ),
         array(
-            'field' => 'OBSERVACIONES',
-            'label' => 'OBSERVACIONES',
+            'field' => 'DIAGNOSTICO',
+            'label' => 'DIAGNOSTICO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'TEMPERATURA',
+            'label' => 'TEMPERATURA',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
+            'field' => 'PESO',
+            'label' => 'PESO',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
+            'field' => 'PULSO',
+            'label' => 'PULSO',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
+            'field' => 'TALLA',
+            'label' => 'TALLA',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
+            'field' => 'TA',
+            'label' => 'TA',
+            'rules' => 'trim|xss_clean'
+        )
+    )
+    , 'cita' => array(array(
+            'field' => 'ID_PACIENTE',
+            'label' => 'ID_PACIENTE',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'ID_ESPECIALIDAD',
+            'label' => 'ID_ESPECIALIDAD',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'FECHA',
+            'label' => 'FECHA',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_INICIO',
+            'label' => 'HORA_INICIO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_FIN',
+            'label' => 'HORA_FIN',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'MOTIVO',
+            'label' => 'MOTIVO',
+            'rules' => 'required|trim|xss_clean'
+        )),
+    'login' => array(array(
+            'field' => 'USUARIO',
+            'label' => 'USUARIO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'PASSWORD',
+            'label' => 'PASSWORD',
             'rules' => 'required|trim|xss_clean'
         ))
 );

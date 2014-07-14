@@ -33,7 +33,7 @@
                             ?>
 
                             <form action="" method="post" class="form-horizontal">
-                                  <fieldset>
+                                <fieldset>
 
                                     <div class="control-group">                                         
                                         <label class="control-label" for="NOMBRE">Nombre *</label>
@@ -83,10 +83,16 @@
                                         <label class="control-label" for="DIRECCION">Direccion *</label>
                                         <div class="controls">
                                             <input id="DIRECCION" type="text" class="span6" name="DIRECCION" value="<?php echo set_value('DIRECCION'); ?>"  />
-
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
 
+
+                                    <div class="control-group">                                         
+                                        <label class="control-label" for="OCUPACION">Ocupacion </label>
+                                        <div class="controls">
+                                            <input id="DIRECCION" type="text" class="span6" name="OCUPACION" value="<?php echo set_value('OCUPACION'); ?>"  />
+                                        </div> <!-- /controls -->               
+                                    </div> <!-- /control-group -->                                                    
 
 
 
@@ -95,7 +101,6 @@
                                         <label class="control-label" for="NOMBRE_PADRE">Nombre Padre/Madre </label>
                                         <div class="controls">
                                             <input id="NOMBRE_PADRE" type="text" class="span6" name="NOMBRE_PADRE" value="<?php echo set_value('NOMBRE_PADRE'); ?>"  />
-
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
 
@@ -114,24 +119,11 @@
 
 
                                     <div class="control-group">                                         
-                                        <label class="control-label" for="TELEFONO_FIJO">Telefono Fijo </label>
+                                        <label class="control-label" for="TELEFONO">Telefono </label>
                                         <div class="controls">
-                                            <input id="TELEFONO_FIJO" type="text" class="span6" name="TELEFONO_FIJO" value="<?php echo set_value('TELEFONO_FIJO'); ?>"  />
+                                            <input id="TELEFONO_FIJO" type="text" class="span6" name="TELEFONO" value="<?php echo set_value('TELEFONO_FIJO'); ?>"  />
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
-
-
-
-
-
-                                    <div class="control-group">                                         
-                                        <label class="control-label" for="TELEFONO_FIJO">Telefono Movil </label>
-                                        <div class="controls">
-                                            <input id="TELEFONO_MOVIL" type="text" class="span6" name="TELEFONO_MOVIL" value="<?php echo set_value('TELEFONO_MOVIL'); ?>"  />
-                                        </div> <!-- /controls -->               
-                                    </div> <!-- /control-group -->                                                    
-
-
 
 
 

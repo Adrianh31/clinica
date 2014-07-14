@@ -12,6 +12,7 @@
 
             <a class="brand" href="index.html">
                 <?php echo $this->config->item('name_company'); ?>
+                <?php print_r($this->session->userdata('idEspecialidad'));?>
             </a>        
 
             <div class="nav-collapse">
@@ -20,12 +21,13 @@
                     <li class="dropdown">                       
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon-user"></i> 
-                            EGrappler.com
+                            
+                            <?php echo $this->session->userdata('nombrePersona');?>
                             <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo base_url('login/logout') ?>">Salir</a></li>
+                            <li><a href="<?php echo base_url('login/salir') ?>">Salir</a></li>
                         </ul>                       
                     </li>
                 </ul>
