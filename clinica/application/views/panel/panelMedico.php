@@ -2,8 +2,8 @@
 <div class="row">
 
 
-    <div class="span8">
-
+   
+    <div class="span12">
         <!-- /widget -->
         <div class="widget widget-table action-table">
             <div class="widget-header"> <i class="icon-th-list"></i>
@@ -19,7 +19,8 @@
                             <th> Hora Inicio</th>
                             <th> Hora Fin</th>
                             <th> Especialidad</th>
-                            <th class="td-actions">Iniciar</th>
+                            <th> Motivo</th>
+                            <th class="td-actions">Iniciar Cita</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,7 @@
                                     <td> <?php echo $cita['HORA_INICIO'] ?> </td>
                                     <td> <?php echo $cita['HORA_FIN'] ?> </td>
                                     <td> <?php echo $cita['ESPECIALIDAD'] ?> </td>
+                                    <td> <?php echo $cita['MOTIVO'] ?> </td>
                                     <td class="td-actions">
                                         <a href="<?php echo base_url('consulta/NuevaConsulta/'.url_base64_encode($cita['ID_PACIENTE'])); ?>" class="btn btn-small btn-success iniciarConsulta">
                                             <i class="btn-icon-only icon-ok" id-cita="<?php echo $cita['ID_CITA']; ?>" consulta="<?php echo url_base64_encode($cita['ID_PACIENTE']); ?>" > </i>
@@ -54,33 +56,7 @@
         </div> 
 
     </div>
-    <!-- /span6 -->
-    <div class="span4">
-        <div class="widget">
-            <div class="widget-header"> <i class="icon-bookmark"></i>
-                <h3>Enlaces Directos</h3>
-            </div>
-            <!-- /widget-header -->
-            <div class="widget-content">
-                <div class="shortcuts"> 
-                    <a href="<?php echo base_url('cita/verAgenda') ?>" class="shortcut">
-                        <i class="shortcut-icon icon-calendar"></i>
-                        <span class="shortcut-label">Ver <br/> Agenda</span> 
-                    </a>
-
-                    <a href="<?php echo base_url('paciente/buscarPaciente') ?>" class="shortcut">
-                        <i class="shortcut-icon icon-user"></i>
-                        <span class="shortcut-label">Buscar Paciente</span> 
-                    </a>
-
-                </div>
-                <!-- /shortcuts --> 
-            </div>
-            <!-- /widget-content --> 
-        </div>
-
-    </div>
-    <!-- /span6 --> 
+  
 </div>
 <!-- /row --> 
 

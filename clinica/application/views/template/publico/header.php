@@ -20,13 +20,12 @@
                     <li class="dropdown">                       
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon-user"></i> 
-                            
-                            <?php echo $this->session->userdata('nombrePersona');?>
+                                    Ingresar
                             <b class="caret"></b>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo base_url('login/salir') ?>">Salir</a></li>
+                            <li><a href="<?php echo base_url('login') ?>">Login</a></li>
                         </ul>                       
                     </li>
                 </ul>

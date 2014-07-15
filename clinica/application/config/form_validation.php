@@ -13,7 +13,7 @@ $config = array(
         ),
         array(
             'field' => 'FECHA_NACIMIENTO',
-            'label' => 'FECHA_NACIMIENTO',
+            'label' => 'FECHA NACIMIENTO',
             'rules' => 'required|trim|date_valid|xss_clean'
         ),
         array(
@@ -33,12 +33,12 @@ $config = array(
         ),
         array(
             'field' => 'NOMBRE_PADRE',
-            'label' => 'NOMBRE_PADRE',
+            'label' => 'NOMBRE PADRE',
             'rules' => 'trim|xss_clean'
         ),
         array(
             'field' => 'RELIGION_PERTENECE',
-            'label' => 'RELIGION_PERTENECE',
+            'label' => 'RELIGION',
             'rules' => 'trim|xss_clean'
         ),
         array(
@@ -48,7 +48,7 @@ $config = array(
         ),
         array(
             'field' => 'CORREO_ELECTRONICO',
-            'label' => 'CORREO_ELECTRONICO',
+            'label' => 'CORREO ELECTRONICO',
             'rules' => 'trim|valid_email|xss_clean'
         ))
     , 'consulta' => array(array(
@@ -87,14 +87,14 @@ $config = array(
             'rules' => 'trim|xss_clean'
         )
     )
-    , 'cita' => array(array(
-            'field' => 'ID_PACIENTE',
-            'label' => 'ID_PACIENTE',
-            'rules' => 'required|trim|xss_clean'
+    , 'citaPublica' => array(array(
+            'field' => 'CORREO_ELECTRONICO',
+            'label' => 'CORREO ELECTRONICO',
+            'rules' => 'required|trim|xss_clean|valid_email'
         ),
         array(
             'field' => 'ID_ESPECIALIDAD',
-            'label' => 'ID_ESPECIALIDAD',
+            'label' => 'ESPECIALIDAD',
             'rules' => 'required|trim|xss_clean'
         ),
         array(
@@ -104,12 +104,43 @@ $config = array(
         ),
         array(
             'field' => 'HORA_INICIO',
-            'label' => 'HORA_INICIO',
+            'label' => 'HORA INICIO',
             'rules' => 'required|trim|xss_clean'
         ),
         array(
             'field' => 'HORA_FIN',
-            'label' => 'HORA_FIN',
+            'label' => 'HORA FIN',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'MOTIVO',
+            'label' => 'MOTIVO',
+            'rules' => 'required|trim|xss_clean'
+        )),
+    
+     'cita' => array(array(
+            'field' => 'ID_PACIENTE',
+            'label' => 'PACIENTE',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'ID_ESPECIALIDAD',
+            'label' => 'ESPECIALIDAD',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'FECHA',
+            'label' => 'FECHA',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_INICIO',
+            'label' => 'HORA INICIO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_FIN',
+            'label' => 'HORA FIN',
             'rules' => 'required|trim|xss_clean'
         ),
         array(

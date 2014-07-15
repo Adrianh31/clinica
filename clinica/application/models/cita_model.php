@@ -24,6 +24,7 @@ class Cita_model extends CI_Model {
         if ($filter == "hoy") {
             $citas = $this->db->query("SELECT c.ID_CITA, CONCAT(per.NOMBRE,' ', per.APELLIDO) AS NOMBRE_PACIENTE,
                                               pac.ID_PACIENTE,
+                                              c.MOTIVO,
                                               es.NOMBRE AS ESPECIALIDAD,
                                               DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')AS FECHA, 
                                               DATE_FORMAT(c.FECHA_INICIO,'%H:%i-%s') AS HORA_INICIO,
@@ -38,6 +39,20 @@ class Cita_model extends CI_Model {
                                        AND DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')=CURDATE()
                                        ORDER BY c.FECHA_INICIO ASC
                                     ")->result_array();
+        } elseif ($filter == "publicas") {
+
+            $citas = $this->db->query("SELECT c.ID_CITA AS id, 'Ocupado' AS title,
+                                        c.FECHA_INICIO AS start, 
+                                        c.FECHA_FIN AS end,
+                                        'false' AS allDay
+                                 FROM cita AS c INNER JOIN paciente AS pac 
+                                 ON c.ID_PACIENTE=pac.ID_PACIENTE
+                                 INNER JOIN persona AS per 
+                                 ON pac.ID_PACIENTE=per.ID_PERSONA
+                                 INNER JOIN especialidad AS es 
+                                 ON es.ID_ESPECIALIDAD=c.ID_ESPECIALIDAD
+                                 WHERE c.ESTADO=0 
+                                 ")->result_array();
         } else {
 
 
@@ -57,10 +72,11 @@ class Cita_model extends CI_Model {
         return $citas;
     }
 
-    public function listaCitasEspecialidad($filtro,$idEspecialidad) {
+    public function listaCitasEspecialidad($filtro, $idEspecialidad) {
         if ($filtro == "hoy") {
             $citas = $this->db->query("SELECT c.ID_CITA, CONCAT(per.NOMBRE,' ', per.APELLIDO) AS NOMBRE_PACIENTE,
                                               pac.ID_PACIENTE,
+                                              c.MOTIVO,
                                               es.NOMBRE AS ESPECIALIDAD,
                                               DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')AS FECHA, 
                                               DATE_FORMAT(c.FECHA_INICIO,'%H:%i-%s') AS HORA_INICIO,
@@ -75,11 +91,11 @@ class Cita_model extends CI_Model {
                                        AND DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')=CURDATE()
                                        AND c.ID_ESPECIALIDAD=?
                                        ORDER BY c.FECHA_INICIO ASC
-                                    ",array($idEspecialidad))->result_array();
+                                    ", array($idEspecialidad))->result_array();
         } else {
             
         }
-        
+
         return $citas;
     }
 

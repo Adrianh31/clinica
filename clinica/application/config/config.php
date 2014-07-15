@@ -366,7 +366,7 @@ $config['proxy_ips'] = '';
 |
 |
 */
-$config['name_company'] = 'Clinica Nazareth';
+$config['name_company'] = 'Clinica Nazaret';
 
 
 /* End of file config.php */

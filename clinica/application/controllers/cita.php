@@ -127,6 +127,7 @@ class Cita extends CI_Controller {
         echo json_encode($citas);
     }
 
+        
     public function actualizarCita() {
 
         $idCita = $this->input->post('id');

@@ -99,4 +99,13 @@ class Paciente_model extends CI_Model {
         return $pacientes;
     }
 
+    
+    public function buscarCorreo($correo){
+        $correo=  $this->db->query("SELECT pac.ID_PACIENTE 
+                                    FROM persona AS per INNER JOIN paciente AS pac
+                                    ON per.ID_PERSONA=pac.ID_PACIENTE
+                                    WHERE per.CORREO_ELECTRONICO=?",array($correo))->row();
+        return $correo;
+    }
+    
 }

@@ -221,12 +221,6 @@ $idPaciente = url_base64_encode($idPaciente);
                                     <!-- /widget-header -->
                                     <div class="widget-content">
                                         <table class="table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th> Campo </th>
-                                                    <th> Valor </th>
-                                                </tr>
-                                            </thead>
                                             <tbody>
 
                                                 <tr>
