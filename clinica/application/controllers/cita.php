@@ -11,6 +11,7 @@ class Cita extends CI_Controller {
         $this->load->model('cita_model');
         $this->load->model('especialidad_model');
         $this->load->model('paciente_model');
+        $this->load->model('estado_cita_model');
         $this->data['seccion'] = 'cita';
     }
 
@@ -28,7 +29,8 @@ class Cita extends CI_Controller {
                 'ID_ESPECIALIDAD' => set_value('ID_ESPECIALIDAD'),
                 'FECHA_INICIO' => $fechaInicio,
                 'FECHA_FIN' => $fechaFin,
-                'MOTIVO' => set_value('MOTIVO')
+                'MOTIVO' => set_value('MOTIVO'),
+                'ID_ESTADO_CITA' => 2
             );
 
             if ($this->cita_model->nuevaCita($cita) == TRUE) {
@@ -67,7 +69,8 @@ class Cita extends CI_Controller {
                 'ID_ESPECIALIDAD' => $this->input->post('ID_ESPECIALIDAD'),
                 'FECHA_INICIO' => $fechaInicio,
                 'FECHA_FIN' => $fechaFin,
-                'MOTIVO' => $this->input->post('MOTIVO')
+                'MOTIVO' => $this->input->post('MOTIVO'),
+                'ID_ESTADO_CITA' => $this->input->post('ID_ESTADO_CITA')
             );
 
             if ($this->cita_model->editarCita($cita, $idCita) == TRUE) {
@@ -86,19 +89,24 @@ class Cita extends CI_Controller {
         }
 
         $this->data['listaEspecialidades'] = $this->especialidad_model->listaEspecialidades();
+        $this->data['listaEstadosCita'] = $this->estado_cita_model->listaEstadosCita();
         $this->data['listaPacientes'] = $this->paciente_model->listaPacientes();
         $this->data['cita'] = $this->cita_model->getCita($idCita);
         $this->data['contenido'] = 'cita/editarCita';
         $this->load->view('template/template', $this->data);
     }
 
-    public function cancelarCita() {
-        $idCita = $this->input->post('ID_CITA');
-        if ($idCita) {
-            $cita = array("ESTADO" => 2);
+    public function cambiarEstadoCita() {
+        $idCita = $this->input->post('idCita');
+        $estado = $this->input->post('estado');
+
+        print_r($this->input->post());
+        if ($idCita && $estado) {
+            $cita = array("ID_ESTADO_CITA" => $estado);
             $this->cita_model->editarCita($cita, $idCita);
+        } else {
+            redirect('cita/verAgenda');
         }
-        redirect('cita/verAgenda');
     }
 
     public function establecerCita() {
@@ -127,7 +135,6 @@ class Cita extends CI_Controller {
         echo json_encode($citas);
     }
 
-        
     public function actualizarCita() {
 
         $idCita = $this->input->post('id');

@@ -29,7 +29,7 @@ $idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
         <div class="control-group">                                         
             <label class="control-label" for="FECHA_NACIMIENTO">Fecha de Nacimiento *</label>
             <div class="controls">
-                <input id="FECHA_NACIMIENTO" type="text" name="FECHA_NACIMIENTO" class="span6" value="<?php echo $paciente->FECHA_NACIMIENTO ?>"  />
+                <input id="FECHA_NACIMIENTO" type="text" name="FECHA_NACIMIENTO" class="span6 fechaNacimiento" value="<?php echo $paciente->FECHA_NACIMIENTO ?>" readonly="readonly"  />
             </div> <!-- /controls -->               
         </div> <!-- /control-group -->
 

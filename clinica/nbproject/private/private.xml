@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/clinica/application/controllers/pago.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/views/paciente/expediente/historial.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/models/especialidad_model.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/controllers/consulta.php</file>
             <file>file:/C:/xampp/htdocs/clinica/application/views/consulta/nuevaConsulta.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/models/paciente_model.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/models/pago_model.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/models/consulta_model.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/controllers/historial.php</file>
-            <file>file:/C:/xampp/htdocs/clinica/application/controllers/paciente.php</file>
+            <file>file:/C:/xampp/htdocs/clinica/application/views/template/template.php</file>
         </group>
     </open-files>
 </project-private>

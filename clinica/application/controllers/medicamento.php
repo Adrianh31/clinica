@@ -7,6 +7,7 @@ class Medicamento extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('medicamento_model');
         $this->data['seccion'] = 'medicamento';
     }
 
@@ -26,6 +27,16 @@ class Medicamento extends CI_Controller {
         $this->data['custom_message'] = '';
         $this->data['contenido'] = 'medicamento/cargarMedicamentos';
         $this->load->view('template/template', $this->data);
+    }
+
+    public function buscarMedicamentos() {
+        $filtro = $this->input->post('query');
+        $listaMedicamentos = false;
+        if ($filtro) {
+            $listaMedicamentos = $this->medicamento_model->buscarMedicamento($filtro);        
+        }
+        echo json_encode($listaMedicamentos);
+       
     }
 
 }

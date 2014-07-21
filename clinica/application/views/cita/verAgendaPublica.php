@@ -1,3 +1,9 @@
+<?php
+echo $custom_message;
+echo $this->session->flashdata('custom_message');
+?>
+
+
 <!-- /widget -->
 <div class="widget widget-nopad">
     <div class="widget-header"> <i class="icon-list-alt"></i>

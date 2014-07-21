@@ -31,12 +31,8 @@
         <script src="<?php echo base_url('assets/js/base.js') ?>"></script> 
 
 
-        <link href="<?php echo base_url('assets/js/datepicker/css/datepicker.css') ?>" rel="stylesheet">
-        <script src="<?php echo base_url('assets/js/datepicker/js/bootstrap-datepicker.js') ?>"></script> 
-
-        <link href="<?php echo base_url('assets/js/timepicker/css/bootstrap-timepicker.min.css') ?>" rel="stylesheet">
-        <script src="<?php echo base_url('assets/js/timepicker/js/bootstrap-timepicker.min.js') ?>"></script> 
-
+        <link href="<?php echo base_url('assets/js/datetimepicker/css/jquery.datetimepicker.css') ?>" rel="stylesheet">
+        <script src="<?php echo base_url('assets/js/datetimepicker/js/jquery.datetimepicker.js') ?>"></script> 
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -80,3 +76,41 @@
     </body>
 
 </html>
+
+<script>
+    $(document).ready(function() {
+
+
+        $(".fechaNacimiento").datetimepicker({
+            format: 'Y-m-d',
+            maxDate: "<?php echo date('Y-m-d'); ?>",
+            lang: 'es',
+            timepicker: false,
+            closeOnDateSelect: true
+        });
+
+
+        $(".datetime").datetimepicker({
+            format: 'Y-m-d',
+            minDate: "-" + "<?php echo date('Y-m-d'); ?>",
+            lang: 'es',
+            timepicker: false,
+            closeOnDateSelect: true
+        });
+        $('.timepicker').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            allowTimes: [
+                '08:00', '08:30', '09:00', '09:30',
+                '10:00', '10:30', '11:00', '11:30', '12:00',
+                '12:30', '13:00', '13:30', '14:00',
+                '14:30', '15:00', '15:30', '16:00', '16:30',
+                '17:00', '17:30'
+            ],
+            step: 30,
+            minTime: "<?php echo date('H:i');?>"
+        });
+
+    });
+
+</script>

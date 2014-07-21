@@ -2,7 +2,7 @@
 <div class="row">
 
 
-   
+
     <div class="span12">
         <!-- /widget -->
         <div class="widget widget-table action-table">
@@ -20,6 +20,7 @@
                             <th> Hora Fin</th>
                             <th> Especialidad</th>
                             <th> Motivo</th>
+                            <th> Estado Cita</th>
                             <th class="td-actions">Iniciar Cita</th>
                         </tr>
                     </thead>
@@ -36,10 +37,18 @@
                                     <td> <?php echo $cita['HORA_FIN'] ?> </td>
                                     <td> <?php echo $cita['ESPECIALIDAD'] ?> </td>
                                     <td> <?php echo $cita['MOTIVO'] ?> </td>
+                                    <td> <?php echo $cita['ESTADO_CITA'] ?> </td>
                                     <td class="td-actions">
-                                        <a href="<?php echo base_url('consulta/NuevaConsulta/'.url_base64_encode($cita['ID_PACIENTE'])); ?>" class="btn btn-small btn-success iniciarConsulta">
-                                            <i class="btn-icon-only icon-ok" id-cita="<?php echo $cita['ID_CITA']; ?>" consulta="<?php echo url_base64_encode($cita['ID_PACIENTE']); ?>" > </i>
-                                        </a>
+                                        <?php if ($cita['ID_ESTADO_CITA'] == 3) { ?>
+                                        <a href="<?php echo base_url('consulta/NuevaConsulta/'.url_base64_encode($cita['ID_PACIENTE']));  ?>" >
+                                                ir a la consulta
+                                            </a> 
+                                        <?php } else { ?>
+                                            <a href="javascript:void(0)" class="btn btn-small btn-success iniciarConsulta" id-cita="<?php echo $cita['ID_CITA']; ?>" consulta="<?php echo url_base64_encode($cita['ID_PACIENTE']); ?>" >
+                                                <i class="btn-icon-only icon-ok"> </i>
+                                            </a>                                            
+                                        <?php } ?>
+
                                     </td>
                                 </tr>
 
@@ -56,7 +65,7 @@
         </div> 
 
     </div>
-  
+
 </div>
 <!-- /row --> 
 
@@ -64,19 +73,29 @@
 
 </form>
 <script>
-   /* $(".iniciarConsulta").click(function(e) {
+    $(".iniciarConsulta").click(function(e) {
         e.preventDefault();
         var idCita = $(this).attr('id-cita');
-        var consulta= $(this).attr('consulta');
+        var consulta = $(this).attr('consulta');
         var element = $(this);
+        var url = "<?php echo base_url('consulta/NuevaConsulta/') ?>" + "/" + consulta;
         if (confirm('Esta seguro de Iniciar la Consulta?')) {
             element.remove();
-            var url="<?php echo base_url('consulta/NuevaConsulta/') ?>"+"/"+consulta;
-            $("#formCrearConsulta").append('<input type="text" value="' + idCita + '" id="idCita" name="idCita">');
-            $("#formCrearConsulta").attr("action", url);
-            $("#formCrearConsulta").submit();
+            $.ajax({
+                data: {idCita: idCita, estado: 3},
+                url: '<?php echo base_url('cita/cambiarEstadoCita'); ?>',
+                type: 'post',
+                beforeSend: function() {
+                },
+                success: function(data) {
+                    window.location.href = url;
+                },
+                error: function(data) {
+                    alert("Error al Iniciar la Consulta");
+                }
+            });
         }
-    });*/
+    });
 </script>
 
 

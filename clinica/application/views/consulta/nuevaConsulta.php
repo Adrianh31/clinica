@@ -128,7 +128,7 @@ $idPaciente = url_base64_encode($idPaciente);
                                         <div class="control-group">                                         
                                             <label class="control-label" for="OBSERVACIONES">Observaciones *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span7" rows="3" name="OBSERVACIONES" id="OBSERVACIONES" ><?php echo set_value('OBSERVACIONES'); ?></textarea>
+                                                <textarea class="form-control span4" rows="5" name="OBSERVACIONES" id="OBSERVACIONES" ><?php echo set_value('OBSERVACIONES'); ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -138,7 +138,7 @@ $idPaciente = url_base64_encode($idPaciente);
                                         <div class="control-group">                                         
                                             <label class="control-label" for="DIAGNOSTICO">Diagnostico *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span7" rows="3" name="DIAGNOSTICO" id="DIAGNOTICO" ><?php echo set_value('DIAGNOSTICO'); ?></textarea>
+                                                <textarea class="form-control span4" rows="5" name="DIAGNOSTICO" id="DIAGNOTICO" ><?php echo set_value('DIAGNOSTICO'); ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -147,20 +147,38 @@ $idPaciente = url_base64_encode($idPaciente);
                                         <div class="container-fluid">
                                             <div class="widget widget-table action-table">
                                                 <div class="widget-header"> <i class="icon-th-list"></i>
-                                                    <h3>Receta Medica</h3>
+                                                    <h3>Crear Receta Medica</h3>
                                                 </div>
                                                 <!-- /widget-header -->
                                                 <div class="widget-content">
-                                                    <table class="table table-striped table-bordered">
+                                                    <table class="table table-striped table-bordered" id="tablaRecetaMedica">
                                                         <thead>
                                                             <tr>
                                                                 <th> Nombre Medicamento </th>
                                                                 <th> Cantidad</th>
                                                                 <th> Dosis</th>
-                                                                <th class="td-actions">Accciones </th>
+                                                                <th> Exitencias </th>
+                                                                <th class="td-actions">Agregar </th>
                                                             </tr>
+
                                                         </thead>
-                                                        <tbody>			  
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="recetaNombreMedicamento" id="recetaNombreMedicamento">
+                                                                <input type="hidden" name="recetaidMedicamento" id="recetaidMedicamento">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="recetaCantidadMedicamento" id="recetaCantidadMedicamento">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="recetaDosisMedicamento" id="recetaDosisMedicamento">
+                                                            </td>
+                                                            <td id="RecetaExistenciaMedicamento"></td>
+                                                            <td>
+                                                                <input type="button" value="agregar" id="recetaAgregarMedicamento">
+                                                            </td>
+                                                        </tr>
+                                                        <tbody>		  
 
                                                         </tbody>
                                                     </table>
@@ -255,7 +273,9 @@ $idPaciente = url_base64_encode($idPaciente);
                                     <!-- /widget-content --> 
                                 </div>                                 
 
-
+                                <?php if ($this->session->userdata('idEspecialidad') == 2) { ?>
+                                    <img src="<?php echo base_url('assets/images/odontograma.jpg'); ?>" style="width: 100%" />
+                                <?php } ?>
 
 
                             </div>
@@ -292,9 +312,13 @@ $idPaciente = url_base64_encode($idPaciente);
                                                         <td><?php echo $consulta['FECHA']; ?> </td>
                                                         <td><?php echo $consulta['NOMBRE_MEDICO']; ?></td>
                                                         <td><?php echo $consulta['ESPECIALIDAD']; ?></td>
-                                                        <td class="td-actions"><a href="javascript:;" class="btn btn-small btn-success"><i class="btn-icon-only icon-ok"> </i></a></td>
+                                                        <td class="td-actions">
+                                                            <a target="_blank" href="<?php echo base_url('consulta/verConsulta/' . url_base64_encode($consulta['ID_CONSULTA'])); ?>" class="btn btn-small btn-success">
+                                                                <i class="btn-icon-only icon-ok"> </i>
+                                                            </a>
+                                                        </td>
                                                     </tr>
-                                                <?php
+                                                    <?php
                                                 }
                                             }
                                             ?>
@@ -314,6 +338,60 @@ $idPaciente = url_base64_encode($idPaciente);
     </div> <!-- /row -->
 </div> <!-- /row -->
 
+
+<script>
+    $(function() {
+        $('#recetaNombreMedicamento').autocomplete({
+            serviceUrl: '<?php echo base_url('medicamento/buscarMedicamentos') ?>',
+            minChars: 1,
+            type: 'post',
+            dataType: 'json',
+            onSelect: function(medicamento) {
+                $("#recetaidMedicamento").val(medicamento.data);
+                $("#RecetaExistenciaMedicamento").html(medicamento.cantidad);
+            },
+            showNoSuggestionNotice: true,
+            noSuggestionNotice: 'Sin resultados',
+        });
+
+        $("#recetaAgregarMedicamento").click(function() {
+            var idMedicamento = $("#recetaidMedicamento").val();
+            var nombreMedicamento = $("#recetaNombreMedicamento").val();
+            var cantidadMedicamento = $("#recetaCantidadMedicamento").val();
+            var dosisMedicamento = $("#recetaDosisMedicamento").val();
+            var idMedicamentoText = "<input type='hidden' value='" + idMedicamento + "' name='recetaIdMedicamentoText[]'>";
+            var nombreMedicamentoText = "<input type='hidden' value='" + nombreMedicamento + "' name='recetaNombreMedicamentoText[]'>";
+            var cantidadMedicamentoText = "<input type='hidden' value='" + cantidadMedicamento + "' name='recetaCantidadMedicamentoText[]'>";
+            var dosisMedicamentoText = "<input type='hidden' value='" + dosisMedicamento + "' name='recetaDosisMedicamentoText[]'>";
+            if (idMedicamento && nombreMedicamento && cantidadMedicamento && dosisMedicamento) {
+                $("#tablaRecetaMedica").append("<tr>" +
+                        "<td>" + nombreMedicamento + nombreMedicamentoText + idMedicamentoText + "</td>" +
+                        "<td>" + cantidadMedicamento + cantidadMedicamentoText + "</td>" +
+                        "<td>" + dosisMedicamento + dosisMedicamentoText + "</td>" +
+                        "<td></td>" +
+                        "<td><a href='javascript:void(0)' class='eliminarMedicamentoReceta'>Eliminar</a></td>" +
+                        "</tr>");
+
+                //clean 
+                $("#recetaidMedicamento").val("");
+                $("#recetaNombreMedicamento").val("");
+                $("#recetaCantidadMedicamento").val("");
+                $("#recetaDosisMedicamento").val("");
+                $("#RecetaExistenciaMedicamento").html("");
+
+            } else {
+                alert("Debe completar todos los campos");
+            }
+        })
+
+
+        $(".eliminarMedicamentoReceta").live("click", function() {
+            $(this).parent().parent().remove();
+        });
+
+    });
+
+</script>
 
 
 

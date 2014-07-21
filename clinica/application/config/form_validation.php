@@ -117,8 +117,7 @@ $config = array(
             'label' => 'MOTIVO',
             'rules' => 'required|trim|xss_clean'
         )),
-    
-     'cita' => array(array(
+    'cita' => array(array(
             'field' => 'ID_PACIENTE',
             'label' => 'PACIENTE',
             'rules' => 'required|trim|xss_clean'
@@ -156,6 +155,55 @@ $config = array(
         array(
             'field' => 'PASSWORD',
             'label' => 'PASSWORD',
+            'rules' => 'required|trim|xss_clean'
+        )),
+    'pacientePublico' => array(array(
+            'field' => 'NOMBRE',
+            'label' => 'NOMBRE',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'APELLIDO',
+            'label' => 'APELLIDO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'FECHA_NACIMIENTO',
+            'label' => 'FECHA NACIMIENTO',
+            'rules' => 'required|trim|date_valid|xss_clean'
+        ),
+        array(
+            'field' => 'SEXO',
+            'label' => 'SEXO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'CORREO_ELECTRONICO',
+            'label' => 'CORREO ELECTRONICO',
+            'rules' => 'required|trim|valid_email|xss_clean'
+        ), array(
+            'field' => 'ID_ESPECIALIDAD',
+            'label' => 'ESPECIALIDAD',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'FECHA',
+            'label' => 'FECHA',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_INICIO',
+            'label' => 'HORA INICIO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'HORA_FIN',
+            'label' => 'HORA FIN',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'MOTIVO',
+            'label' => 'MOTIVO',
             'rules' => 'required|trim|xss_clean'
         ))
 );

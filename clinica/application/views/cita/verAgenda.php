@@ -170,9 +170,9 @@
     $(document).ready(function() {
 
         var date = new Date();
-        var d = date.getDate();
+        var d = "<?php echo date('d'); ?>";
         //var m = date.getMonth();
-        var y = date.getFullYear();
+        var y = "<?php echo date('Y'); ?>";
 
 
         $('#calendar').fullCalendar({

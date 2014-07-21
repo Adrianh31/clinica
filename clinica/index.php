@@ -18,6 +18,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
+date_default_timezone_set('America/El_Salvador');
 	define('ENVIRONMENT', 'development');
 /*
  *---------------------------------------------------------------

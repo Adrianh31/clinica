@@ -6,6 +6,12 @@ class Expediente_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getExpediente($idPaciente){
+        $expediente=  $this->db->query("SELECT * FROM expediente WHERE ID_PACIENTE=?",array($idPaciente))->row();
+           return $expediente;     
+    }
+    
+   
     public function nuevoExpediente($idPaciente) {
         $expediente = array(
             "ID_PACIENTE" => $idPaciente,
@@ -15,5 +21,8 @@ class Expediente_model extends CI_Model {
         $this->db->insert('expediente', $expediente);
         return true;
     }
+    
+   
+    
 
 }

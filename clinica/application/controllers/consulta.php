@@ -9,6 +9,7 @@ class Consulta extends CI_Controller {
         parent::__construct();
         $this->load->model('consulta_model');
         $this->load->model('paciente_model');
+        $this->load->model('receta_model');
         $this->data['seccion'] = 'paciente';
 
         //-----------INFO USER -------------//
@@ -29,7 +30,7 @@ class Consulta extends CI_Controller {
                 redirect('paciente/nuevoPaciente');
             }
         }
-        
+
         $this->data['custom_message'] = '';
         if ($this->form_validation->run('consulta') == false) {
             $this->data['custom_message'] = (validation_errors() ? '<div class="alert">' . validation_errors() . '</div>' : false);
@@ -49,8 +50,11 @@ class Consulta extends CI_Controller {
                 'ESTADO' => 1,
             );
 
-            if ($this->consulta_model->nuevaConsulta($data) > 0) {
+            $idConsulta = $this->consulta_model->nuevaConsulta($data);
+            if ($idConsulta > 0) {
                 $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Consulta Creada Exitosamente!!!</p></div>');
+                //guardar receta medica
+                $this->receta_model->nuevaReceta($this->input->post(), $idConsulta);
                 redirect(current_url());
             } else {
                 $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
@@ -59,10 +63,25 @@ class Consulta extends CI_Controller {
 
         $this->data['paciente'] = $paciente;
         $this->data['idPaciente'] = $idPaciente;
-        $this->data['listaConsultas']=  $this->consulta_model->listaConsultas($paciente->ID_EXPEDIENTE);
+        $this->data['listaConsultas'] = $this->consulta_model->listaConsultas($paciente->ID_EXPEDIENTE);
         $this->data['contenido'] = 'consulta/nuevaConsulta';
         $this->data['pestania'] = 'consulta';
         $this->load->view('template/template', $this->data);
+    }
+
+    public function verConsulta($idConsulta) {
+        $idConsulta = url_base64_decode($idConsulta);
+        $consulta = $this->consulta_model->getConsulta($idConsulta);
+        if ($consulta) {
+            $this->data['paciente'] = $this->paciente_model->getPaciente($consulta->ID_PACIENTE);
+            $this->data['consulta'] =$consulta;
+            $this->data['recetaMedica']=$this->receta_model->getReceta($idConsulta);
+            $this->data['contenido'] = 'consulta/verConsulta';
+            $this->data['pestania'] = 'consulta';
+            $this->load->view('template/template', $this->data);
+        } else {
+          //  redirect('panel');
+        }
     }
 
 }

@@ -22,7 +22,12 @@
                             <td><?php echo $consulta['FECHA']; ?> </td>
                             <td><?php echo $consulta['NOMBRE_MEDICO']; ?></td>
                             <td><?php echo $consulta['ESPECIALIDAD']; ?></td>
-                            <td class="td-actions"><a href="javascript:;" class="btn btn-small btn-success"><i class="btn-icon-only icon-ok"> </i></a></td>
+                            <td class="td-actions">
+                                <a target="_blank" href="<?php echo base_url('consulta/verConsulta/' . url_base64_encode($consulta['ID_CONSULTA'])); ?>" class="btn btn-small btn-success">
+                                    <i class="btn-icon-only icon-ok"> </i>
+                                </a>
+                            </td>
+
                         </tr>
                         <?php
                     }

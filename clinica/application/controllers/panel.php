@@ -8,6 +8,7 @@ class Panel extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('cita_model');
+        $this->load->model('empleado_model');
         $this->data['seccion'] = 'panel';
 
         //-----------INFO USER -------------//
@@ -21,9 +22,10 @@ class Panel extends CI_Controller {
         $this->data['custom_message'] = '';
         //validar Rol
         if (validarRoles($this->roles, 'Medico') == TRUE) {
-            $this->data['listaCitas'] = $this->cita_model->listaCitasEspecialidad("hoy", 1);
+            $this->data['listaCitas'] = $this->cita_model->listaCitasMedico("hoy", $this->idPersona);
             $this->data['contenido'] = 'panel/panelMedico';
         } else {
+            $this->data['listaMedicos'] = $this->empleado_model->listaEmpleados("Medicos");
             $this->data['listaCitas'] = $this->cita_model->listaCitas("hoy");
             $this->data['contenido'] = 'panel/panelSecretaria';
         }

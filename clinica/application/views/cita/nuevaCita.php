@@ -78,20 +78,14 @@
                                     <div class="control-group">                                         
                                         <label class="control-label" for="FECHA">Fecha *</label>
                                         <div class="controls">
-                                            <div class="input-append date datetime" data-date="2014-07-11" data-date-format="yyyy-mm-dd">
-                                                <input class="span3 disabled" size="16" type="text" value="<?php echo set_value('FECHA', $citaDia); ?>" name="FECHA" id="FECHA" readonly="readonly">
-                                                <span class="add-on"><i class="icon-th"></i></span>
-                                            </div>	
+                                            <input class="span3 disabled datetime" size="16" type="text" value="<?php echo set_value('FECHA', $citaDia); ?>" name="FECHA" id="FECHA" readonly="readonly">	
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->    
 
                                     <div class="control-group">                                         
                                         <label class="control-label" for="HORA_INICIO">Hora Inicio *</label>
                                         <div class="controls">
-                                            <div class="input-append date" id="dp3">
-                                                <input type="text" class="timepicker span3" value="<?php echo set_value('HORA_INICIO', $citaHora); ?>" name="HORA_INICIO" id="HORA_INICIO" readonly="readonly" data-default-time="false">
-                                                <span class="add-on"><i class="icon-th"></i></span>
-                                            </div>
+                                            <input type="text" class="timepicker span3" value="<?php echo set_value('HORA_INICIO', $citaHora); ?>" name="HORA_INICIO" id="HORA_INICIO" readonly="readonly" data-default-time="false">
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->         
 
@@ -99,10 +93,7 @@
                                     <div class="control-group">                                         
                                         <label class="control-label" for="HORA_FIN">Hora Fin *</label>
                                         <div class="controls">
-                                            <div class="input-append date" id="dp3">
-                                                <input type="text" class="timepicker span3" value="<?php echo set_value('HORA_FIN'); ?>" name="HORA_FIN" id="HORA_INICIO" readonly="readonly" data-default-time="false">
-                                                <span class="add-on"><i class="icon-th"></i></span>
-                                            </div>
+                                            <input type="text" class="timepicker span3" value="<?php echo set_value('HORA_FIN'); ?>" name="HORA_FIN" id="HORA_INICIO" readonly="readonly" data-default-time="false">
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
 
@@ -140,13 +131,6 @@
 
 
 
-<script>
-    $(".datetime").datepicker();
-    $('.timepicker').timepicker({
-        minuteStep: 30,
-        showMeridian: false,
-    });
-</script>
 
 
 

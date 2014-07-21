@@ -6,9 +6,27 @@ class Consulta_model extends CI_Model {
         parent::__construct();
     }
 
-    public function nuevaConsulta($cita) {
+    public function getConsulta($idConsulta){
+        
+        $consulta=  $this->db->query("SELECT con.*,exp.ID_PACIENTE, 
+                                             CONCAT(per.NOMBRE,' ',per.APELLIDO) AS NOMBRE_EMPLEADO,
+                                             emp.ID_ESPECIALIDAD
+                                      FROM consulta AS con
+                                      INNER JOIN persona AS per
+                                      ON con.ID_EMPLEADO=per.ID_PERSONA
+                                      INNER JOIN expediente AS exp
+                                      ON exp.ID_EXPEDIENTE=con.ID_EXPEDIENTE
+                                      INNER JOIN empleado AS emp
+                                      ON per.ID_PERSONA=emp.ID_EMPLEADO
+                                      WHERE ID_CONSULTA=?",array($idConsulta))->row();
+        return $consulta;
+    }
+    
+    
+    
+    public function nuevaConsulta($consulta) {
         $idConsulta;
-        $this->db->insert('consulta', $cita);
+        $this->db->insert('consulta', $consulta);
         if ($this->db->affected_rows() == '1') {
             $idConsulta = $this->db->insert_id();
         } else {
@@ -32,5 +50,8 @@ class Consulta_model extends CI_Model {
                                         WHERE con.ID_EXPEDIENTE=?",array($idExpediente))->result_array();
         return $consultas;
     }
+    
+    
+   
 
 }
