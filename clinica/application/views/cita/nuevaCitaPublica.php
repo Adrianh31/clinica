@@ -47,7 +47,7 @@
                                         <label class="control-label" for="start">Especialidad *</label>
                                         <div class="controls">
 
-                                            <select class="form-control span6" name="ID_ESPECIALIDAD" id="ID_ESPECIALIDAD">
+                                            <select class="form-control span6 especialidad1" name="ID_ESPECIALIDAD" id="ID_ESPECIALIDAD">
                                                 <option value="">--Seleccionar --</option>
                                                 <?php
                                                 if ($listaEspecialidades) {
@@ -64,6 +64,18 @@
 
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
+
+
+                                    <div class="control-group">                                         
+                                        <label class="control-label" for="start">Medico *</label>
+                                        <div class="controls">
+
+                                            <select class="form-control span6 medico1" name="ID_EMPLEADO" id="ID_EMPLEADO">
+                                                <option value="">--Seleccionar --</option>
+                                            </select>					
+
+                                        </div> <!-- /controls -->               
+                                    </div> <!-- /control-group -->                                     
 
 
                                     <div class="control-group">                                         
@@ -172,8 +184,7 @@
                                     <div class="control-group">                                         
                                         <label class="control-label" for="start">Especialidad *</label>
                                         <div class="controls">
-
-                                            <select class="form-control span6" name="ID_ESPECIALIDAD" id="ID_ESPECIALIDAD">
+                                            <select class="form-control span6 especialidad2" name="ID_ESPECIALIDAD" id="ID_ESPECIALIDAD">
                                                 <option value="">--Seleccionar --</option>
                                                 <?php
                                                 if ($listaEspecialidades) {
@@ -187,9 +198,18 @@
                                                 }
                                                 ?>
                                             </select>					
-
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->                
+
+
+                                    <div class="control-group">                                         
+                                        <label class="control-label" for="start">Medico *</label>
+                                        <div class="controls">
+                                            <select class="form-control span6 medico2" name="ID_EMPLEADO" id="ID_EMPLEADO">
+                                                <option value="">--Seleccionar --</option>
+                                            </select>					
+                                        </div> <!-- /controls -->               
+                                    </div> <!-- /control-group -->                                      
 
 
                                     <div class="control-group">                                         
@@ -249,10 +269,34 @@
 
 
 <script>
-    $(".datetime").datepicker();
-    $('.timepicker').timepicker({
-        minuteStep: 30,
-        showMeridian: false,
+
+    function listaEmpleados(destino, idEspecialidad) {
+        $.ajax({
+            data: {idEspecialidad: idEspecialidad},
+            url: '<?php echo base_url('servicios/listaMedicos'); ?>',
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function() {
+            },
+            success: function(data) {
+                $("." + destino).html("");
+                $.each(data, function(i, item) {
+                    $("." + destino).append("<option value='" + item.ID_EMPLEADO + "'>" + item.NOMBRE_EMPLEADO + "</option>")
+                })
+            },
+            error: function(data) {
+                alert("Error, intentelo de nuevo");
+            }
+        });
+    }
+
+    $(".especialidad1").change(function() {
+        var idEspecialidad = $(this).val();
+        listaEmpleados("medico1", idEspecialidad);
+    });
+    $(".especialidad2").change(function() {
+        var idEspecialidad = $(this).val();
+        listaEmpleados("medico2", idEspecialidad);
     });
 </script>
 

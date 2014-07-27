@@ -29,5 +29,6 @@ class Pre_consulta_model extends CI_Model {
         $this->db->query("DELETE FROM pre_consulta WHERE ID_CITA=?", array($idCita));
         return TRUE;
     }
+    
 
 }

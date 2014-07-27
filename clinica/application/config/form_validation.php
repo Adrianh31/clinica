@@ -98,6 +98,12 @@ $config = array(
             'rules' => 'required|trim|xss_clean'
         ),
         array(
+            'field' => 'ID_EMPLEADO',
+            'label' => 'MEDICO',
+            'rules' => 'required|trim|xss_clean'
+        ),        
+        
+        array(
             'field' => 'FECHA',
             'label' => 'FECHA',
             'rules' => 'required|trim|xss_clean'
@@ -180,7 +186,7 @@ $config = array(
         array(
             'field' => 'CORREO_ELECTRONICO',
             'label' => 'CORREO ELECTRONICO',
-            'rules' => 'required|trim|valid_email|xss_clean'
+            'rules' => 'required|trim|valid_email|xss_clean|is_unique[persona.CORREO_ELECTRONICO]'
         ), array(
             'field' => 'ID_ESPECIALIDAD',
             'label' => 'ESPECIALIDAD',
@@ -205,6 +211,46 @@ $config = array(
             'field' => 'MOTIVO',
             'label' => 'MOTIVO',
             'rules' => 'required|trim|xss_clean'
+        )),
+    'pago' => array(array(
+            'field' => 'PRECIO',
+            'label' => 'PRECIO',
+            'rules' => 'required|numeric|trim|xss_clean'
+        ),
+        array(
+            'field' => 'EXONERADO',
+            'label' => 'EXONERADO',
+            'rules' => 'required|trim|xss_clean'
+        )),
+    'medicamento' => array(array(
+            'field' => 'NOMBRE',
+            'label' => 'NOMBRE',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'CASA_FARMACEUTICA',
+            'label' => 'CASA FARMACEUTICA',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'CODIGO',
+            'label' => 'CODIGO',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'DESCRIPCION',
+            'label' => 'DESCRIPCION',
+            'rules' => 'trim|xss_clean'
+        ),
+        array(
+            'field' => 'PRESENTACION',
+            'label' => 'PRESENTACION',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'CANTIDAD_ACTUAL',
+            'label' => 'EXISTENCIAS',
+            'rules' => 'required|trim|xss_clean|numeric'
         ))
 );
 ?>

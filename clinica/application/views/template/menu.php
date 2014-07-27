@@ -63,9 +63,9 @@
                     </a>    
 
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo base_url('medicamento/despacharReceta') ?>">Despachar Receta</a></li>
+                        <li><a href="<?php echo base_url('medicamento/recetasPendientes') ?>">Recetas Pendientes</a></li>
                         <li><a href="<?php echo base_url('medicamento/verMedicamentos') ?>">Ver Medicamentos</a></li>
-                        <li><a href="<?php echo base_url('medicamento/cargarMedicamentos') ?>">Cargar Medicamentos</a></li>
+                        <li><a href="<?php echo base_url('medicamento/nuevoMedicamento') ?>">Nuevo Medicamento</a></li>
                     </ul>                   
                 </li>
 

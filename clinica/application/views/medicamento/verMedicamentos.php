@@ -21,20 +21,33 @@
                             <thead>
                                 <tr>
                                     <th> Nombre Medicamento </th>
-                                    <th> Codigo</th>
-                                    <th> Existencia</th>
-                                    <th class="td-actions">Ver Detalle</th>
+                                    <th> Casa Farmaceutica</th>
+                                    <th> Presentacion</th>
+                                    <th> Existencias</th>
+                                    <th class="td-actions">Editar Medicamento</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td> Aspirina </td>
-                                    <td> ASP0001</td>
-                                    <td> 30</td>
-                                    <td class="td-actions"><a href="javascript:;" class="btn btn-small btn-success"><i class="btn-icon-only icon-ok"> </i></a></td>
-                                </tr>
-				  
 
+                                <?php
+                                if ($listaMedicamentos) {
+                                    foreach ($listaMedicamentos as $medicamento) {
+                                        ?>
+                                        <tr>
+                                    <td> <?php echo $medicamento['NOMBRE'];?> </td>
+                                            <td> <?php echo $medicamento['CASA_FARMACEUTICA'];?></td>
+                                            <td> <?php echo $medicamento['PRESENTACION'];?></td>
+                                            <td> <?php echo $medicamento['CANTIDAD_ACTUAL'];?></td>
+                                            <td class="td-actions">
+                                                <a href="<?php echo base_url('medicamento/editarMedicamento/'.  url_base64_encode($medicamento['ID_MEDICAMENTO']))?>" class="btn btn-small btn-success">
+                                                    <i class="btn-icon-only icon-ok"> </i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>

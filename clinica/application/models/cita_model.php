@@ -7,13 +7,15 @@ class Cita_model extends CI_Model {
     }
 
     public function getCita($idCita) {
-        $cita = $this->db->query("SELECT c.ID_PACIENTE,c.ID_ESPECIALIDAD,
+        $cita = $this->db->query("SELECT c.ID_PACIENTE,emp.ID_ESPECIALIDAD,
                                          c.MOTIVO,c.ID_CITA,ec.ID_ESTADO_CITA,
                                          DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d') AS FECHA,
                                          DATE_FORMAT(c.FECHA_INICIO,'%H:%i:%s') AS HORA_INICIO,
                                          DATE_FORMAT(c.FECHA_FIN,'%H:%i:%s') AS HORA_FIN
                                   FROM cita AS c INNER JOIN estado_cita AS ec
                                   ON c.ID_ESTADO_CITA=ec.ID_ESTADO_CITA
+                                  INNER JOIN empleado AS emp
+                                  ON emp.ID_EMPLEADO=c.ID_EMPLEADO
                                   WHERE c.ID_CITA=?", array($idCita)
                 )->row();
         return $cita;
@@ -29,7 +31,8 @@ class Cita_model extends CI_Model {
                                               c.MOTIVO,
                                               ec.ESTADO,ec.ID_ESTADO_CITA,
                                               es.NOMBRE AS ESPECIALIDAD, es.ID_ESPECIALIDAD,
-                                              pc.ID_EMPLEADO,
+                                              emp.ID_EMPLEADO,
+                                              CONCAT(per2.NOMBRE,' ', per2.APELLIDO) AS NOMBRE_MEDICO,
                                               DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')AS FECHA, 
                                               DATE_FORMAT(c.FECHA_INICIO,'%H:%i-%s') AS HORA_INICIO,
                                               DATE_FORMAT(c.FECHA_FIN,'%H:%i-%s') AS HORA_FIN
@@ -37,12 +40,14 @@ class Cita_model extends CI_Model {
                                        ON c.ID_PACIENTE=pac.ID_PACIENTE
                                        INNER JOIN persona AS per 
                                        ON pac.ID_PACIENTE=per.ID_PERSONA
-                                       INNER JOIN especialidad AS es 
-                                       ON es.ID_ESPECIALIDAD=c.ID_ESPECIALIDAD
-                                       INNER JOIN ESTADO_CITA AS ec
+                                       INNER JOIN empleado AS emp
+                                       ON emp.ID_EMPLEADO=c.ID_EMPLEADO
+                                       INNER JOIN especialidad AS es
+                                       ON es.ID_ESPECIALIDAD=emp.ID_ESPECIALIDAD
+                                       INNER JOIN estado_cita AS ec
                                        ON  ec.ID_ESTADO_CITA=c.ID_ESTADO_CITA
-                                       LEFT JOIN pre_consulta AS pc
-                                       ON pc.ID_CITA=c.ID_CITA
+                                       INNER JOIN persona AS per2
+                                       ON per2.ID_PERSONA=emp.ID_EMPLEADO
                                        WHERE DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')=?
                                        ORDER BY c.FECHA_INICIO ASC
                                     ", array($fechaHoy))->result_array();
@@ -52,13 +57,8 @@ class Cita_model extends CI_Model {
                                         c.FECHA_INICIO AS start, 
                                         c.FECHA_FIN AS end,
                                         'false' AS allDay
-                                 FROM cita AS c INNER JOIN paciente AS pac 
-                                 ON c.ID_PACIENTE=pac.ID_PACIENTE
-                                 INNER JOIN persona AS per 
-                                 ON pac.ID_PACIENTE=per.ID_PERSONA
-                                 INNER JOIN especialidad AS es 
-                                 ON es.ID_ESPECIALIDAD=c.ID_ESPECIALIDAD
-                                 WHERE c.ID_ESTADO_CITA=2 
+                                 FROM cita AS c
+                                 WHERE c.ID_ESTADO_CITA IN (1,2) 
                                  ")->result_array();
         } else {
 
@@ -66,14 +66,21 @@ class Cita_model extends CI_Model {
             $citas = $this->db->query("SELECT c.ID_CITA AS id, CONCAT(per.NOMBRE,' ', per.APELLIDO,' (',es.NOMBRE,')') AS title,
                                         c.FECHA_INICIO AS start, 
                                         c.FECHA_FIN AS end,
-                                        'false' AS allDay
+                                        'false' AS allDay,
+                                        CASE 
+                                        WHEN c.ID_ESTADO_CITA=1 
+                                            THEN '#ff7f74'
+                                            ELSE '#00ba8b'
+                                        END AS color 
                                  FROM cita AS c INNER JOIN paciente AS pac 
                                  ON c.ID_PACIENTE=pac.ID_PACIENTE
                                  INNER JOIN persona AS per 
                                  ON pac.ID_PACIENTE=per.ID_PERSONA
+                                 INNER JOIN empleado AS emp
+                                 ON emp.ID_EMPLEADO=c.ID_EMPLEADO
                                  INNER JOIN especialidad AS es 
-                                 ON es.ID_ESPECIALIDAD=c.ID_ESPECIALIDAD
-                                 WHERE c.ID_ESTADO_CITA=2 
+                                 ON es.ID_ESPECIALIDAD=emp.ID_EMPLEADO
+                                 WHERE c.ID_ESTADO_CITA IN (1,2)
                                  ")->result_array();
         }
         return $citas;
@@ -94,15 +101,16 @@ class Cita_model extends CI_Model {
                                        ON c.ID_PACIENTE=pac.ID_PACIENTE
                                        INNER JOIN persona AS per 
                                        ON pac.ID_PACIENTE=per.ID_PERSONA
+                                       INNER JOIN empleado AS emp
+                                       ON emp.ID_EMPLEADO=c.ID_EMPLEADO
                                        INNER JOIN especialidad AS es 
-                                       ON es.ID_ESPECIALIDAD=c.ID_ESPECIALIDAD
-                                       INNER JOIN pre_consulta AS prc
-                                       ON prc.ID_CITA=c.ID_CITA
+                                       ON es.ID_ESPECIALIDAD=emp.ID_ESPECIALIDAD
                                        INNER JOIN estado_cita AS ec
                                        ON ec.ID_ESTADO_CITA=c.ID_ESTADO_CITA
-                                       WHERE (c.ID_ESTADO_CITA=2 OR c.ID_ESTADO_CITA=3) 
+                                       WHERE c.ID_ESTADO_CITA=2 
                                        AND DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d')=?
-                                       AND prc.ID_EMPLEADO=?
+                                       AND emp.ID_EMPLEADO=?
+                                       AND c.ID_ESTADO_CITA=2
                                        ORDER BY c.FECHA_INICIO ASC", array($fechaHoy, $idMedico))->result_array();
         } else {
             
@@ -158,7 +166,25 @@ class Cita_model extends CI_Model {
         }
         return $result;
     }
+  
     
+    public function esDiaOcupado($idEspecialidad,$fechaInicio){
+        $resultado=false;
+        //contar medicos espcialidad
+     
+        
+        //contar medicos disponibles para la hora
+        $this->db->query("SELECT * FROM
+                          (SELECT COUNT(ID_EMPLEADO) FROM empleado WHERE ID_ESPECIALIDAD=?) AS totalMedicos
+                          (SELECT COUNT(ID_CITA) 
+                           FROM cita INNER JOIN empleado AS emp
+                           ON emp.ID_EMPLEADO=c.ID_EMPLEADO
+                           WHERE emp.ID_ESPCIALIDAD=?) AS totalCitas");
+        
+        
+        return $resultado;
+        
+    }
     
-
+   
 }

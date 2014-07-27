@@ -117,7 +117,7 @@
                 '17:00', '17:30'
             ],
             step: 30,
-            minTime: "<?php echo date('H:i'); ?>"
+            //minTime: "<?php echo date('H:i'); ?>"
         });
 
     });

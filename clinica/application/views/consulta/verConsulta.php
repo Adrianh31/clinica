@@ -42,56 +42,70 @@
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->		
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TEMPERATURA">TEMPERATURA</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TEMPERATURA" value="<?php echo $consulta->TEMPERATURA; ?>" disabled="" />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                        <?php if ($consulta->ID_ESPECIALIDAD == 2) { ?>
 
-
-
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="PESO">PESO</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="PESO" value="<?php echo $consulta->PESO; ?>" disabled="" />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                            <div class="control-group">                                         
+                                                <div class="controls">
+                                                    <img src="<?php echo base_url('assets/images/odontograma.jpg'); ?>"  width="50%" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="PULSO">PULSO</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="PULSO" value="<?php echo $consulta->PULSO; ?>"  disabled=""/>
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                        <?php } else { ?>
+
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TEMPERATURA">TEMPERATURA</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TEMPERATURA" value="<?php echo $consulta->TEMPERATURA; ?>" disabled="" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TALLA">TALLA</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TALLA" value="<?php echo $consulta->TALLA; ?>" disabled="" />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="PESO">PESO</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="PESO" value="<?php echo $consulta->PESO; ?>" disabled="" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TA">T.A.</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TA" value="<?php echo $consulta->TA; ?>" disabled="" />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
 
 
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="PULSO">PULSO</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="PULSO" value="<?php echo $consulta->PULSO; ?>"  disabled=""/>
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TALLA">TALLA</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TALLA" value="<?php echo $consulta->TALLA; ?>" disabled="" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TA">T.A.</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TA" value="<?php echo $consulta->TA; ?>" disabled="" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+                                        <?php } ?>
 
 
                                         <div class="control-group">                                         
                                             <label class="control-label" for="OBSERVACIONES">Observaciones *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span4" rows="5" name="OBSERVACIONES" id="OBSERVACIONES" disabled=""><?php echo $consulta->OBSERVACIONES; ?></textarea>
+                                                <textarea class="form-control span7" rows="5" name="OBSERVACIONES" id="OBSERVACIONES" disabled=""><?php echo $consulta->OBSERVACIONES; ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -101,7 +115,7 @@
                                         <div class="control-group">                                         
                                             <label class="control-label" for="DIAGNOSTICO">Diagnostico *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span4" rows="5" name="DIAGNOSTICO" id="DIAGNOTICO" disabled=""><?php echo $consulta->DIAGNOSTICO; ?></textarea>
+                                                <textarea class="form-control span7" rows="5" name="DIAGNOSTICO" id="DIAGNOTICO" disabled=""><?php echo $consulta->DIAGNOSTICO; ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -164,7 +178,20 @@
                                                                 <th> Fecha </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>			 
+                                                        <tbody>
+                                                            <?php
+                                                            if ($analisis) {
+                                                                foreach ($analisis as $examen) {
+                                                                    ?>
+                                                                    <tr>
+                                                                        <td><?php echo $examen['NOMBRE_EXAMEN']; ?></td>
+                                                                        <td><?php echo $examen['DESCRIPCION']; ?></td>
+                                                                        <td><?php echo $examen['FECHA_A_REALIZAR']; ?></td>
+                                                                    </tr>
+                                                                    <?php
+                                                                }
+                                                            }
+                                                            ?>                                                            
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -220,10 +247,6 @@
                                     </div>
                                     <!-- /widget-content --> 
                                 </div> 
-
-                                <?php if ($consulta->ID_ESPECIALIDAD == 2) { ?>
-                                    <img src="<?php echo base_url('assets/images/odontograma.jpg'); ?>" style="width: 100%" />
-                                <?php } ?>
                             </div>
                         </div>
                         <!------------- PESTANIA CONSULTA ------------>

@@ -10,11 +10,22 @@ class Servicios extends CI_Controller {
         $this->load->model('cita_model');
         $this->load->model('especialidad_model');
         $this->load->model('paciente_model');
+        $this->load->model('empleado_model');
     }
 
     public function agenda() {
+        /*
+          $this->load->library('email');
+          $this->email->from('noreply@clinicanazaret.website.org', 'Your Name');
+          $this->email->to('raulgq@gmail.com');
+          $this->email->subject('Email Test');
+          $this->email->message('Testing the email class.');
+          $this->email->send();
+          echo $this->email->print_debugger(); */
+
+
         $this->data['custom_message'] = '';
-        $this->data['contenido'] = 'cita/VerAgendaPublica';
+        $this->data['contenido'] = 'cita/verAgendaPublica';
         $this->load->view('template/publico/template', $this->data);
     }
 
@@ -39,7 +50,7 @@ class Servicios extends CI_Controller {
 
                 $cita = array(
                     'ID_PACIENTE' => $idPaciente,
-                    'ID_ESPECIALIDAD' => set_value('ID_ESPECIALIDAD'),
+                    'ID_EMPLEADO' => set_value('ID_EMPLEADO'),
                     'FECHA_INICIO' => $fechaInicio,
                     'FECHA_FIN' => $fechaFin,
                     'MOTIVO' => set_value('MOTIVO'),
@@ -47,7 +58,7 @@ class Servicios extends CI_Controller {
                 );
 
                 if ($this->cita_model->nuevaCita($cita) == TRUE) {
-                    $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!!</p></div>');
+                    $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
                     redirect('servicios/agenda');
                 } else {
                     $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
@@ -107,7 +118,7 @@ class Servicios extends CI_Controller {
                     );
 
                     if ($this->cita_model->nuevaCita($cita) == TRUE) {
-                        $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Paciente Guardado Exitosamente!!!</p></div>');
+                        $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Paciente Guardado Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
                         redirect('servicios/agenda');
                     }
                 } else {
@@ -137,6 +148,14 @@ class Servicios extends CI_Controller {
             redirect('servicios/nuevaCita');
         } else {
             redirect('servicios/agenda');
+        }
+    }
+
+    public function listaMedicos() {
+        $idEspecialidad = $this->input->post('idEspecialidad');
+        if ($idEspecialidad) {
+            $listaMedicos = $this->empleado_model->listaMedicosEspecialidad($idEspecialidad);
+            echo json_encode($listaMedicos);
         }
     }
 

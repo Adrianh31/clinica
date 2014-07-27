@@ -10,6 +10,7 @@ class Consulta extends CI_Controller {
         $this->load->model('consulta_model');
         $this->load->model('paciente_model');
         $this->load->model('receta_model');
+        $this->load->model('analisis_model');        
         $this->data['seccion'] = 'paciente';
 
         //-----------INFO USER -------------//
@@ -55,6 +56,8 @@ class Consulta extends CI_Controller {
                 $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Consulta Creada Exitosamente!!!</p></div>');
                 //guardar receta medica
                 $this->receta_model->nuevaReceta($this->input->post(), $idConsulta);
+                //guardar examenes medicos
+                $this->analisis_model->nuevoAnalisis($this->input->post(), $idConsulta);                
                 redirect(current_url());
             } else {
                 $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
@@ -76,6 +79,7 @@ class Consulta extends CI_Controller {
             $this->data['paciente'] = $this->paciente_model->getPaciente($consulta->ID_PACIENTE);
             $this->data['consulta'] =$consulta;
             $this->data['recetaMedica']=$this->receta_model->getReceta($idConsulta);
+            $this->data['analisis']=$this->analisis_model->getAnalisis($idConsulta);
             $this->data['contenido'] = 'consulta/verConsulta';
             $this->data['pestania'] = 'consulta';
             $this->load->view('template/template', $this->data);

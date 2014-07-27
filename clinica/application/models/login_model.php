@@ -15,7 +15,7 @@ class Login_model extends CI_Model {
                                            WHERE u.USUARIO=? 
                                            AND u.PASSWORD=MD5(?)
                                            AND u.ESTADO=1", array($usuario, $password))->row();
-        print_r($this->db->last_query());
+       // print_r($this->db->last_query());
 
         if ($buscarUsuario) {
 

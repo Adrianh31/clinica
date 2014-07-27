@@ -3,22 +3,22 @@
     <div class="span12">            
 
         <div class="widget ">
-
+            
             <?php
             echo $custom_message;
             echo $this->session->flashdata('custom_message');
             ?>
 
             <div class="widget-header">
-                <i class="icon-money"></i>
-                <h3>Pagos pendientes</h3>
+                <i class="icon-briefcase"></i>
+                <h3>Recetas Pendientes</h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
 
                 <div class="widget widget-table action-table">
                     <div class="widget-header"> <i class="icon-th-list"></i>
-                        <h3>Pagos por Realizar</h3>
+                        <h3>Recetas por Despachar</h3>
                     </div>
                     <!-- /widget-header -->
                     <div class="widget-content">
@@ -28,25 +28,26 @@
                                     <th> Fecha Consulta </th>
                                     <th> Nombre Medico</th>
                                     <th> Nombre Paciente</th>
-                                    <th class="td-actions" style="text-align: center;">Confirmar Pago</th>
+                                    <th class="td-actions">Ver Receta</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                if ($listaPagosPendientes) {
-                                    foreach ($listaPagosPendientes as $pago) {
+                                if ($listaRecetasPendienes) {
+                                    foreach ($listaRecetasPendienes as $receta) {
                                         ?>
                                         <tr>
-                                            <td> <?php echo $pago['FECHA'] ?> </td>
-                                            <td> <?php echo $pago['NOMBRE_MEDICO'] ?></td>
-                                            <td> <?php echo $pago['NOMBRE_PACIENTE'] ?></td>
-                                            <td class="td-actions" style="text-align: center;">
-                                                <a href="<?php echo base_url('pago/nuevoPago/' . url_base64_encode($pago['ID_CONSULTA'])) ?>" class="btn btn-small btn-success">
+                                            <td> <?php echo $receta['FECHA'] ?> </td>
+                                            <td> <?php echo $receta['NOMBRE_MEDICO'] ?></td>
+                                            <td> <?php echo $receta['NOMBRE_PACIENTE'] ?></td>
+                                            <td class="td-actions">
+                                                <a href="<?php echo base_url('medicamento/despacharReceta/' . url_base64_encode($receta['ID_CONSULTA'])) ?>" class="btn btn-small btn-success">
                                                     <i class="btn-icon-only icon-ok"> </i>
                                                 </a>
                                             </td>
-                                        </tr>    
-                                    <?php }
+                                        </tr>
+                                        <?php
+                                    }
                                 }
                                 ?>
 

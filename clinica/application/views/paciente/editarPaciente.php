@@ -1,13 +1,13 @@
 <?php
 echo $custom_message;
 echo $this->session->flashdata('custom_message');
-$idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
+$idPaciente = url_base64_encode($paciente->ID_PACIENTE);
 ?>
 
-<form action="<?php echo base_url('paciente/editarPaciente/'.$idPaciente)?>" method="post" class="form-horizontal">
+<form action="<?php echo base_url('paciente/editarPaciente/' . $idPaciente) ?>" method="post" class="form-horizontal">
     <fieldset>
-        
-        <?php echo form_hidden('ID_PACIENTE',$idPaciente); ?>
+
+        <?php echo form_hidden('ID_PACIENTE', $idPaciente); ?>
 
         <div class="control-group">                                         
             <label class="control-label" for="NOMBRE">Nombre *</label>
@@ -24,7 +24,7 @@ $idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
                 <input id="APELLIDO" type="text" class="span6" name="APELLIDO" value="<?php echo $paciente->APELLIDO ?>"  />
             </div> <!-- /controls -->               
         </div> <!-- /control-group -->
-        
+
 
         <div class="control-group">                                         
             <label class="control-label" for="FECHA_NACIMIENTO">Fecha de Nacimiento *</label>
@@ -41,11 +41,11 @@ $idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
             <label class="control-label">Sexo *</label>
             <div class="controls">
                 <label class="radio inline">
-                    <input type="radio"  name="SEXO" value="Masculino"  <?php echo ($paciente->SEXO=='Masculino')?'checked':'' ?> >  Masculino
+                    <input type="radio"  name="SEXO" value="Masculino"  <?php echo ($paciente->SEXO == 'Masculino') ? 'checked' : '' ?> >  Masculino
                 </label>
 
                 <label class="radio inline">
-                    <input type="radio" name="SEXO" value="Femenino"  <?php echo ($paciente->SEXO=='Femenino')?'checked':'' ?>> Femenino
+                    <input type="radio" name="SEXO" value="Femenino"  <?php echo ($paciente->SEXO == 'Femenino') ? 'checked' : '' ?>> Femenino
                 </label>
             </div>    <!-- /controls -->          
         </div> <!-- /control-group -->
@@ -94,7 +94,7 @@ $idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
             </div> <!-- /controls -->               
         </div> <!-- /control-group -->                
 
-        
+
         <div class="control-group">                                         
             <label class="control-label" for="CORREO_ELECTRONICO">Correo Electronico </label>
             <div class="controls">
@@ -107,6 +107,12 @@ $idPaciente=  url_base64_encode($paciente->ID_PACIENTE);
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Actualizar Paciente</button> 
             <a href="#" class="btn">Cancelar</a>
+
+            <?php if (validarRoles($this->session->userdata('roles'), 'Medico') == TRUE) { ?>
+            <a href="<?php echo base_url('consulta/nuevaConsulta/'.$idPaciente)?>" class="btn btn-success" style=" float: right;">Crear Nueva Consulta</a>
+            <?php }
+            ?>
+
         </div> <!-- /form-actions -->
 
 

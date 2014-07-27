@@ -5,6 +5,9 @@
  */
 
 
+.event-pending{color:#ff7f74;}
+.event-valodated{color:#00ba8b;}
+
 .fc {
 	direction: ltr;
 	text-align: left;

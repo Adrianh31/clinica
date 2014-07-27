@@ -6,6 +6,13 @@ class Medicamento_model extends CI_Model {
         parent::__construct();
     }
 
+    public function getMedicamento($idMedicamento) {
+        $listaMedicamentos = $this->db->query("SELECT * 
+                                               FROM medicamento 
+                                               WHERE ID_MEDICAMENTO=?", array($idMedicamento))->row();
+        return $listaMedicamentos;
+    }
+
     public function listaMedicamentos() {
         $listaMedicamentos = $this->db->query("SELECT * FROM medicamento")->result_array();
         return $listaMedicamentos;
@@ -24,6 +31,48 @@ class Medicamento_model extends CI_Model {
         }
         $lista = array("suggestions" => $medicamentos);
         return $lista;
+    }
+
+    public function actualizarInventario($idReceta) {
+        $result;
+        //actualizar inventario
+        $this->db->query("UPDATE medicamento AS med
+                         INNER JOIN detalle_receta AS dre
+                         ON med.ID_MEDICAMENTO=dre.ID_MEDICAMENTO
+                         SET med.CANTIDAD_ACTUAL=
+                              CASE WHEN (med.CANTIDAD_ACTUAL-dre.CANTIDAD)<0 THEN 0
+                                   ELSE med.CANTIDAD_ACTUAL-dre.CANTIDAD
+                              END
+                          WHERE dre.ID_RECETA=?", $idReceta);
+
+        if ($this->db->affected_rows() >= 0) {
+            $result = TRUE;
+        } else {
+            $result = FALSE;
+        }
+        return $result;
+    }
+
+    public function editarMedicamento($medicamento, $idMedicamento) {
+        $result;
+        $this->db->update("medicamento", $medicamento, array("ID_MEDICAMENTO" => $idMedicamento));
+        if ($this->db->affected_rows() >= 0) {
+            $result = TRUE;
+        } else {
+            $result = FALSE;
+        }
+        return $result;
+    }
+
+    public function nuevoMedicamento($medicamento) {
+        $idMedicamento;
+        $this->db->insert('medicamento', $medicamento);
+        if ($this->db->affected_rows() == '1') {
+            $idMedicamento = $this->db->insert_id();
+        } else {
+            $idMedicamento = 0;
+        }
+        return $idMedicamento;
     }
 
 }

@@ -80,55 +80,69 @@ $idPaciente = url_base64_encode($idPaciente);
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->		
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TEMPERATURA">TEMPERATURA</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TEMPERATURA" value="<?php echo set_value('TEMPERATURA'); ?>"  />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
 
+                                        <?php if ($this->session->userdata('idEspecialidad') == 2) { ?>
 
-
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="PESO">PESO</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="PESO" value="<?php echo set_value('PESO'); ?>"  />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                            <div class="control-group">                                         
+                                                <div class="controls">
+                                                    <img src="<?php echo base_url('assets/images/odontograma.jpg'); ?>"  width="50%" />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="PULSO">PULSO</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="PULSO" value="<?php echo set_value('PULSO'); ?>"  />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                        <?php } else { ?>
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TEMPERATURA">TEMPERATURA</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TEMPERATURA" value="<?php echo set_value('TEMPERATURA'); ?>"  />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TALLA">TALLA</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TALLA" value="<?php echo set_value('TALLA'); ?>"  />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="PESO">PESO</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="PESO" value="<?php echo set_value('PESO'); ?>"  />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
 
 
-                                        <div class="control-group">                                         
-                                            <label class="control-label" for="TA">T.A.</label>
-                                            <div class="controls">
-                                                <input id="APELLIDO" type="text" class="span4" name="TA" value="<?php echo set_value('TA'); ?>"  />
-                                            </div> <!-- /controls -->               
-                                        </div> <!-- /control-group -->
 
 
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="PULSO">PULSO</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="PULSO" value="<?php echo set_value('PULSO'); ?>"  />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TALLA">TALLA</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TALLA" value="<?php echo set_value('TALLA'); ?>"  />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+
+                                            <div class="control-group">                                         
+                                                <label class="control-label" for="TA">T.A.</label>
+                                                <div class="controls">
+                                                    <input id="APELLIDO" type="text" class="span4" name="TA" value="<?php echo set_value('TA'); ?>"  />
+                                                </div> <!-- /controls -->               
+                                            </div> <!-- /control-group -->
+
+                                        <?php } ?>
 
                                         <div class="control-group">                                         
                                             <label class="control-label" for="OBSERVACIONES">Observaciones *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span4" rows="5" name="OBSERVACIONES" id="OBSERVACIONES" ><?php echo set_value('OBSERVACIONES'); ?></textarea>
+                                                <textarea class="form-control span7" rows="5" name="OBSERVACIONES" id="OBSERVACIONES" ><?php echo set_value('OBSERVACIONES'); ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -138,7 +152,7 @@ $idPaciente = url_base64_encode($idPaciente);
                                         <div class="control-group">                                         
                                             <label class="control-label" for="DIAGNOSTICO">Diagnostico *</label>
                                             <div class="controls">
-                                                <textarea class="form-control span4" rows="5" name="DIAGNOSTICO" id="DIAGNOTICO" ><?php echo set_value('DIAGNOSTICO'); ?></textarea>
+                                                <textarea class="form-control span7" rows="5" name="DIAGNOSTICO" id="DIAGNOTICO" ><?php echo set_value('DIAGNOSTICO'); ?></textarea>
                                             </div> <!-- /controls -->               
                                         </div> <!-- /control-group -->
 
@@ -197,17 +211,31 @@ $idPaciente = url_base64_encode($idPaciente);
                                                 </div>
                                                 <!-- /widget-header -->
                                                 <div class="widget-content">
-                                                    <table class="table table-striped table-bordered">
+                                                    <table class="table table-striped table-bordered" id="tablaExamen">
                                                         <thead>
                                                             <tr>
                                                                 <th> Nombre Examen </th>
                                                                 <th> Descripcion</th>
                                                                 <th> Fecha </th>
-                                                                <th class="td-actions">Accciones </th>
+                                                                <th class="td-actions">Agregar Examen </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>			  
-
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="examenNombreExamen" id="examenNombreExamen">
+                                                                    <input type="hidden" name="examenidExamen" id="examenidExamen">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="examenDescripcionExamen" id="examenDescripcionExamen">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="datetime" name="examenFechaExamen" id="examenFechaExamen" readonly="readonly">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="button" value="agregar" id="examenAgregarExamen">
+                                                                </td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -273,9 +301,7 @@ $idPaciente = url_base64_encode($idPaciente);
                                     <!-- /widget-content --> 
                                 </div>                                 
 
-                                <?php if ($this->session->userdata('idEspecialidad') == 2) { ?>
-                                    <img src="<?php echo base_url('assets/images/odontograma.jpg'); ?>" style="width: 100%" />
-                                <?php } ?>
+
 
 
                             </div>
@@ -341,6 +367,7 @@ $idPaciente = url_base64_encode($idPaciente);
 
 <script>
     $(function() {
+
         $('#recetaNombreMedicamento').autocomplete({
             serviceUrl: '<?php echo base_url('medicamento/buscarMedicamentos') ?>',
             minChars: 1,
@@ -386,6 +413,55 @@ $idPaciente = url_base64_encode($idPaciente);
 
 
         $(".eliminarMedicamentoReceta").live("click", function() {
+            $(this).parent().parent().remove();
+        });
+
+        //--------------------------------------------------------------------//
+        //--------------------------------------------------------------------//
+        //--------------------------------------------------------------------//        
+
+        $('#examenNombreExamen').autocomplete({
+            serviceUrl: '<?php echo base_url('examen/buscarExamenes') ?>',
+            minChars: 1,
+            type: 'post',
+            dataType: 'json',
+            onSelect: function(examen) {
+                $("#examenidExamen").val(examen.data);
+            },
+            showNoSuggestionNotice: true,
+            noSuggestionNotice: 'Sin resultados',
+        });
+
+        $("#examenAgregarExamen").click(function() {
+            var idExamen = $("#examenidExamen").val();
+            var nombreExamen = $("#examenNombreExamen").val();
+            var descripcionExamen = $("#examenDescripcionExamen").val();
+            var fechaExamen = $("#examenFechaExamen").val();
+            var idExamenText = "<input type='hidden' value='" + idExamen + "' name='examenIdExamenText[]'>";
+            var nombreExamenText = "<input type='hidden' value='" + nombreExamen + "' name='examenNombreExamenText[]'>";
+            var fechaExamenText = "<input type='hidden' value='" + fechaExamen + "' name='examenFechaExamenText[]'>";
+            var descripcionExamenText = "<input type='hidden' value='" + descripcionExamen + "' name='examenDescripcionExamenText[]'>";
+            if (idExamen && nombreExamen && fechaExamen) {
+                $("#tablaExamen").append("<tr>" +
+                        "<td>" + nombreExamen + nombreExamenText + idExamenText + "</td>" +
+                        "<td>" + descripcionExamen + descripcionExamenText + "</td>" +
+                        "<td>" + fechaExamen + fechaExamenText + "</td>" +
+                        "<td><a href='javascript:void(0)' class='eliminarExamen'>Eliminar</a></td>" +
+                        "</tr>");
+
+                //clean 
+                $("#examenidExamen").val("");
+                $("#examenNombreExamen").val("");
+                $("#examenFechaExamen").val("");
+                $("#examenDescripcionExamen").val("");
+
+            } else {
+                alert("Debe completar todos los campos");
+            }
+        });
+
+
+        $(".eliminarExamen").live("click", function() {
             $(this).parent().parent().remove();
         });
 

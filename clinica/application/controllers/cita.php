@@ -23,10 +23,10 @@ class Cita extends CI_Controller {
 
             $fechaInicio = set_value('FECHA') . ' ' . set_value('HORA_INICIO');
             $fechaFin = set_value('FECHA') . ' ' . set_value('HORA_FIN');
-
+            
             $cita = array(
                 'ID_PACIENTE' => set_value('ID_PACIENTE'),
-                'ID_ESPECIALIDAD' => set_value('ID_ESPECIALIDAD'),
+                'ID_EMPLEADO' => set_value('ID_EMPLEADO'),
                 'FECHA_INICIO' => $fechaInicio,
                 'FECHA_FIN' => $fechaFin,
                 'MOTIVO' => set_value('MOTIVO'),
@@ -66,7 +66,7 @@ class Cita extends CI_Controller {
 
             $cita = array(
                 'ID_PACIENTE' => $this->input->post('ID_PACIENTE'),
-                'ID_ESPECIALIDAD' => $this->input->post('ID_ESPECIALIDAD'),
+                'ID_EMPLEADO' => $this->input->post('ID_EMPLEADO'),
                 'FECHA_INICIO' => $fechaInicio,
                 'FECHA_FIN' => $fechaFin,
                 'MOTIVO' => $this->input->post('MOTIVO'),

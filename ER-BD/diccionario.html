@@ -53,7 +53,7 @@
 <div id="title-sect">
 <h1>clinica<br> Data Dictionay</h1>
 <p>
-<em>2014-07-12</em>
+<em>2014-07-21</em>
 </p>
 <p class="proj-desc">
 <em></em>
@@ -72,6 +72,7 @@
 <li><a href='#DOCUMENTO'>DOCUMENTO</a></li>
 <li><a href='#EMPLEADO'>EMPLEADO</a></li>
 <li><a href='#ESPECIALIDAD'>ESPECIALIDAD</a></li>
+<li><a href='#ESTADO_CITA'>ESTADO_CITA</a></li>
 <li><a href='#EXAMEN'>EXAMEN</a></li>
 <li><a href='#EXPEDIENTE'>EXPEDIENTE</a></li>
 <li><a href='#INVENTARIO_MEDICAMENTO'>INVENTARIO_MEDICAMENTO</a></li>
@@ -79,6 +80,7 @@
 <li><a href='#PACIENTE'>PACIENTE</a></li>
 <li><a href='#PAGO'>PAGO</a></li>
 <li><a href='#PERSONA'>PERSONA</a></li>
+<li><a href='#PRE_CONSULTA'>PRE_CONSULTA</a></li>
 <li><a href='#RECETA'>RECETA</a></li>
 <li><a href='#RESULTADO_ANALISIS'>RESULTADO_ANALISIS</a></li>
 <li><a href='#ROL'>ROL</a></li>
@@ -183,7 +185,20 @@
 </tr>
 <tr>
     <td>ID_ESPECIALIDAD</td>
-    <td>INT</td>
+    <td>INT(11)</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ID_ESTADO_CITA</td>
+    <td>INT(11)</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -233,19 +248,6 @@
     <td></td>
     <td></td>
 </tr>
-<tr>
-    <td>ESTADO</td>
-    <td>INT(1)</td>
-    <td>&nbsp;</td>
-    <td>&#10004;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
-    <td>0</td>
-    <td></td>
-</tr>
 <table id='CONSULTA'>
 <caption>CONSULTA</caption>
 <tr><td colspan='11'></td></tr>
@@ -271,7 +273,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
+    <td>&#10004;</td>
     <td></td>
     <td></td>
 </tr>
@@ -871,8 +873,8 @@
 <tr>
     <td>ID_ESPECIALIDAD</td>
     <td>INT</td>
-    <td>&#10004;</td>
-    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -937,8 +939,50 @@
     <td></td>
 </tr>
 <tr>
-    <td>CODIGO</td>
+    <td>NJM</td>
     <td>VARCHAR(45)</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<table id='ESTADO_CITA'>
+<caption>ESTADO_CITA</caption>
+<tr><td colspan='11'></td></tr>
+<tr>
+    <th>Column name</th>
+    <th>DataType</th>
+    <th><abbr title='Primary Key'>PK</abbr></th>
+    <th><abbr title='Not Null'>NN</abbr></th>
+    <th><abbr title='Unique'>UQ</abbr></th>
+    <th><abbr title='Binary'>BIN</abbr></th>
+    <th><abbr title='Unsigned'>UN</abbr></th>
+    <th><abbr title='Zero Fill'>ZF</abbr></th>
+    <th><abbr title='Auto Increment'>AI</abbr></th>
+    <th>Default</th>
+    <th>Comment</th>
+</tr>
+<tr>
+    <td>ID_ESTADO_CITA</td>
+    <td>INT</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ESTADO</td>
+    <td>VARCHAR(25)</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -1086,6 +1130,19 @@
     <td></td>
 </tr>
 <tr>
+    <td>CODIGO</td>
+    <td>VARCHAR(45)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
     <td>FECHA_CREACION</td>
     <td>DATETIME</td>
     <td>&nbsp;</td>
@@ -1096,6 +1153,19 @@
     <td>&nbsp;</td>
     <td class='attr'>&nbsp;</td>
     <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>EXONERADO</td>
+    <td>INT</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td>0</td>
     <td></td>
 </tr>
 <table id='INVENTARIO_MEDICAMENTO'>
@@ -1178,7 +1248,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
+    <td>&#10004;</td>
     <td></td>
     <td></td>
 </tr>
@@ -1281,19 +1351,6 @@
     <td>INT(11)</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>CODIGO</td>
-    <td>VARCHAR(45)</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -1450,7 +1507,7 @@
 </tr>
 <tr>
     <td>EXONERADO</td>
-    <td>VARCHAR(45)</td>
+    <td>INT(1)</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -1531,9 +1588,77 @@
 </tr>
 <tr>
     <td>TELEFONO</td>
-    <td>VARCHAR(15)</td>
+    <td>INT(11)</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ESTADO</td>
+    <td>INT(1)</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td>0</td>
+    <td></td>
+</tr>
+<table id='PRE_CONSULTA'>
+<caption>PRE_CONSULTA</caption>
+<tr><td colspan='11'></td></tr>
+<tr>
+    <th>Column name</th>
+    <th>DataType</th>
+    <th><abbr title='Primary Key'>PK</abbr></th>
+    <th><abbr title='Not Null'>NN</abbr></th>
+    <th><abbr title='Unique'>UQ</abbr></th>
+    <th><abbr title='Binary'>BIN</abbr></th>
+    <th><abbr title='Unsigned'>UN</abbr></th>
+    <th><abbr title='Zero Fill'>ZF</abbr></th>
+    <th><abbr title='Auto Increment'>AI</abbr></th>
+    <th>Default</th>
+    <th>Comment</th>
+</tr>
+<tr>
+    <td>ID_PRE_CONSULTA</td>
+    <td>INT</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ID_EMPLEADO</td>
+    <td>INT(11)</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ID_CITA</td>
+    <td>INT(11)</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -1567,7 +1692,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
+    <td>&#10004;</td>
     <td></td>
     <td></td>
 </tr>

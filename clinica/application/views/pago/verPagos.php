@@ -28,21 +28,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td> 05/07/2014 </td>
-                                    <td> Doctor 1</td>
-                                    <td> Paciente 1</td>
-                                    <td> SI</td>
-                                    <td> $3.00</td>
-                                </tr>
 
-                                <tr>
-                                    <td> 10/06/2014 </td>
-                                    <td> Doctor 2</td>
-                                    <td> Paciente 2</td>
-                                    <td> NO </td>
-                                    <td> $3.00</td>
-                                </tr>				  
+                                <?php
+                                if ($listaPagosRealizados) {
+                                    foreach ($listaPagosRealizados as $pago) {
+                                        ?>
+                                        <tr>
+                                            <td> <?php echo $pago['FECHA'] ?> </td>
+                                            <td> <?php echo $pago['NOMBRE_MEDICO'] ?></td>
+                                            <td> <?php echo $pago['NOMBRE_PACIENTE'] ?></td>
+                                            <td> <?php echo $pago['EXONERADO'] ?></td>
+                                            <td> <?php echo $pago['PRECIO'] ?></td>
+                                        </tr>    
+                                        <?php
+                                    }
+                                }
+                                ?>                                
+
+
 
                             </tbody>
                         </table>
