@@ -298,6 +298,8 @@
         var idEspecialidad = $(this).val();
         listaEmpleados("medico2", idEspecialidad);
     });
+    $(".especialidad1").change();
+    $(".especialidad2").change();
 </script>
 
 

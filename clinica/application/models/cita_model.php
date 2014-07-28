@@ -7,8 +7,9 @@ class Cita_model extends CI_Model {
     }
 
     public function getCita($idCita) {
-        $cita = $this->db->query("SELECT c.ID_PACIENTE,emp.ID_ESPECIALIDAD,
+        $cita = $this->db->query("SELECT c.ID_PACIENTE,emp.ID_ESPECIALIDAD, c.ID_EMPLEADO,
                                          c.MOTIVO,c.ID_CITA,ec.ID_ESTADO_CITA,
+                                         CONCAT(per.NOMBRE,' ',per.APELLIDO) AS NOMBRE_PACIENTE,
                                          DATE_FORMAT(c.FECHA_INICIO,'%Y-%m-%d') AS FECHA,
                                          DATE_FORMAT(c.FECHA_INICIO,'%H:%i:%s') AS HORA_INICIO,
                                          DATE_FORMAT(c.FECHA_FIN,'%H:%i:%s') AS HORA_FIN
@@ -16,13 +17,14 @@ class Cita_model extends CI_Model {
                                   ON c.ID_ESTADO_CITA=ec.ID_ESTADO_CITA
                                   INNER JOIN empleado AS emp
                                   ON emp.ID_EMPLEADO=c.ID_EMPLEADO
+                                  INNER JOIN persona AS per
+                                  ON per.ID_PERSONA=c.ID_PACIENTE
                                   WHERE c.ID_CITA=?", array($idCita)
                 )->row();
         return $cita;
     }
 
     public function listaCitas($filter) {
-
 
         if ($filter == "hoy") {
             $fechaHoy = date('Y-m-d');
@@ -53,13 +55,22 @@ class Cita_model extends CI_Model {
                                     ", array($fechaHoy))->result_array();
         } elseif ($filter == "publicas") {
 
+            //get count medicos
+            $totalMedicos = $this->db->query("SELECT COUNT(ID_EMPLEADO)AS total 
+                                              FROM empleado 
+                                              WHERE ID_ESPECIALIDAD IS NOT NULL")->row();
+            $totalMedicos = $totalMedicos->total;
+
             $citas = $this->db->query("SELECT c.ID_CITA AS id, 'Ocupado' AS title,
+                                              COUNT(c.ID_CITA) AS total,
                                         c.FECHA_INICIO AS start, 
                                         c.FECHA_FIN AS end,
                                         'false' AS allDay
                                  FROM cita AS c
-                                 WHERE c.ID_ESTADO_CITA IN (1,2) 
-                                 ")->result_array();
+                                 WHERE c.ID_ESTADO_CITA IN (1,2)
+                                 GROUP BY FECHA_INICIO
+                                 HAVING total>=?
+                                 ", array($totalMedicos))->result_array();
         } else {
 
 
@@ -166,13 +177,12 @@ class Cita_model extends CI_Model {
         }
         return $result;
     }
-  
-    
-    public function esDiaOcupado($idEspecialidad,$fechaInicio){
-        $resultado=false;
+
+    //------------------------ VALIDACIONES CITAS ------------------------------------//
+
+    public function esDiaOcupado($idMedico, $fechaInicio) {
+        $resultado = false;
         //contar medicos espcialidad
-     
-        
         //contar medicos disponibles para la hora
         $this->db->query("SELECT * FROM
                           (SELECT COUNT(ID_EMPLEADO) FROM empleado WHERE ID_ESPECIALIDAD=?) AS totalMedicos
@@ -180,11 +190,36 @@ class Cita_model extends CI_Model {
                            FROM cita INNER JOIN empleado AS emp
                            ON emp.ID_EMPLEADO=c.ID_EMPLEADO
                            WHERE emp.ID_ESPCIALIDAD=?) AS totalCitas");
-        
-        
         return $resultado;
-        
     }
-    
-   
+
+    public function esMedicoOcupado($idMedico, $fechaInicio, $idCita) {
+        $ocupado = false;
+        if ($idCita) {
+            $cantidad = $this->db->query("SELECT COUNT(ID_EMPLEADO)AS total 
+                                          FROM cita 
+                                          WHERE ID_EMPLEADO=? 
+                                          AND DATE_FORMAT(FECHA_INICIO,'%Y-%m-%d %H:%i:%s')=?
+                                          AND ID_CITA!=? 
+                                          AND ID_ESTADO_CITA IN(1,2)", array($idMedico, $fechaInicio, $idCita))->row();
+        } else {
+            $cantidad = $this->db->query("SELECT COUNT(ID_EMPLEADO) AS total
+                                          FROM cita 
+                                          WHERE ID_EMPLEADO=? 
+                                          AND DATE_FORMAT(FECHA_INICIO,'%Y-%m-%d %H:%i')=?
+                                          AND ID_ESTADO_CITA IN(1,2)", array($idMedico, $fechaInicio))->row();
+        }
+
+        if ($cantidad->total >= 1) {
+            $ocupado = true;
+        }
+        return $ocupado;
+    }
+
+    public function validarCita($idCita) {
+        $this->db->query("UPDATE cita SET ID_ESTADO_CITA=2 WHERE MD5(ID_CITA)=?", array($idCita));
+        return true;
+    }
+
+    //------------------------ VALIDACIONES CITAS ------------------------------------//
 }

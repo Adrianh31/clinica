@@ -8,20 +8,24 @@ function validarRoles($roles, $tieneRol) {
     }
     return FALSE;
 }
-/*
+
 function validarHorasCitas($horaInicio, $horaFin) {
-    $resultado = false;
+    $resultado = true;
     $horaInicio = strtotime($horaInicio);
     $horaFin = strtotime($horaFin);
     $horaLimite = strtotime("15:30");
     $horaComienzo = strtotime("08:00");
     if ($horaInicio > $horaFin) {
         $resultado = false;
-    } elseif (!$horaInicio) {
+    } elseif ($horaInicio == 1406440800) {
         $resultado = false;
-    } elseif ($horaFin > $horaLimite) {
-        
+    } elseif ($horaFin == 1406440800) {
+        $resultado = false;
+    } elseif ($horaFin == $horaInicio) {
+        $resultado = false;
+    } elseif ((($horaComienzo - $horaLimite) / 60) > 30) {
+        $resultado = false;
     }
 
     return $resultado;
-}*/
+}

@@ -106,6 +106,15 @@
             timepicker: false,
             closeOnDateSelect: true
         });
+        
+        $(".datetimeCita").datetimepicker({
+            format: 'Y-m-d',
+            minDate: "-" + "<?php echo date('Y-m-d'); ?>",
+            lang: 'es',
+            timepicker: false,
+            closeOnDateSelect: true
+        });        
+        
         $('.timepicker').datetimepicker({
             datepicker: false,
             format: 'H:i',

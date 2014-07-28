@@ -44,13 +44,13 @@ class Paciente extends CI_Controller {
     }
 
     public function editarPaciente($idPaciente) {
-         
-        if(!$idPaciente){
+
+        if (!$idPaciente) {
             redirect('paciente/nuevoPaciente');
-        }else{
-            $idPaciente=  url_base64_decode($idPaciente);
+        } else {
+            $idPaciente = url_base64_decode($idPaciente);
         }
-        
+
         $this->data['custom_message'] = '';
 
         if ($this->form_validation->run('paciente') == false) {
@@ -116,6 +116,15 @@ class Paciente extends CI_Controller {
         }
         $this->data['contenido'] = 'paciente/buscarPaciente';
         $this->load->view('template/template', $this->data);
+    }
+
+    public function buscarPacienteAuto() {
+        $filtro = $this->input->post('query');
+        $listaPacientes = false;
+        if ($filtro) {
+            $listaPacientes = $this->paciente_model->buscarPacienteAuto($filtro);
+        }
+        echo json_encode($listaPacientes);
     }
 
 }

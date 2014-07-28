@@ -41,7 +41,9 @@
 
                                     <td> <?php echo $cita['MOTIVO'] ?> </td>
                                     <td> <?php echo $cita['ESTADO'] ?> </td>
-                                    <td class="td-actions"><a href=""  id-cita="<?php echo $cita['ID_CITA'] ?>"  class="editarCitar icon-pencil"/></td>
+                                    <td class="td-actions">
+                                        <a href="<?php echo base_url('cita/editarCita/'. url_base64_encode($cita['ID_CITA'])) ?>" class="icon-pencil"/>
+                                    </td>
                                 </tr>
 
                                 <?php

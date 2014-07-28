@@ -23,7 +23,7 @@ class Cita extends CI_Controller {
 
             $fechaInicio = set_value('FECHA') . ' ' . set_value('HORA_INICIO');
             $fechaFin = set_value('FECHA') . ' ' . set_value('HORA_FIN');
-            
+
             $cita = array(
                 'ID_PACIENTE' => set_value('ID_PACIENTE'),
                 'ID_EMPLEADO' => set_value('ID_EMPLEADO'),
@@ -33,12 +33,30 @@ class Cita extends CI_Controller {
                 'ID_ESTADO_CITA' => 2
             );
 
-            if ($this->cita_model->nuevaCita($cita) == TRUE) {
-                $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!!</p></div>');
-                redirect(current_url());
-            } else {
-                $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+            //----------------- Validar Cita -------------------------//
+            $citaValida = TRUE;
+            $medicoOcupado = $this->cita_model->esMedicoOcupado(set_value('ID_EMPLEADO'), $fechaInicio, 0);
+            if ($medicoOcupado) {
+                $citaValida = FALSE;
+                $this->data['custom_message'] = '<div class="alert alert-error"><p>Medico no Disponible para este Horario</p></div>';
             }
+
+
+            if (validarHorasCitas(set_value('HORA_INICIO'), set_value('HORA_FIN')) == FALSE) {
+                $citaValida = FALSE;
+                $this->data['custom_message'] = '<div class="alert alert-error"><p>Error Hora Inicio - Hora Fin , verifique</p></div>';
+            }
+            //----------------- Validar Cita ---------------------------//            
+            //----------------- Guardar Cita -----------------------------// 
+            if ($citaValida == TRUE) {
+                if ($this->cita_model->nuevaCita($cita) == TRUE) {
+                    $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!!</p></div>');
+                    redirect(current_url());
+                } else {
+                    $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+                }
+            }
+            //----------------- Guardar Cita -----------------------------// 
         }
 
         $citaDia = $this->session->flashdata('citaDia');
@@ -52,10 +70,15 @@ class Cita extends CI_Controller {
         $this->load->view('template/template', $this->data);
     }
 
-    public function editarCita() {
+    public function editarCita($idCita) {
 
         $this->data['custom_message'] = '';
-        $idCita = $this->session->flashdata('citaId');
+
+        if (!$idCita) {
+            redirect('cita/verAgenda');
+        }
+
+        $idCita = url_base64_decode($idCita);
 
         if ($this->form_validation->run('cita') == false) {
             $this->data['custom_message'] = (validation_errors() ? '<div class="alert">' . validation_errors() . '</div>' : false);
@@ -73,20 +96,34 @@ class Cita extends CI_Controller {
                 'ID_ESTADO_CITA' => $this->input->post('ID_ESTADO_CITA')
             );
 
-            if ($this->cita_model->editarCita($cita, $idCita) == TRUE) {
-                $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Actualizada Correctamente!!!</p></div>');
-                $this->session->set_flashdata('citaId', $idCita);
-                redirect(current_url());
-            } else {
-                $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+
+            //----------------- Validar Cita -------------------------//
+            $citaValida = TRUE;
+            $medicoOcupado = $this->cita_model->esMedicoOcupado($this->input->post('ID_EMPLEADO'), $fechaInicio, $idCita);
+            if ($medicoOcupado) {
+                $citaValida = FALSE;
+                $this->data['custom_message'] = '<div class="alert alert-error"><p>Medico no Disponible para este Horario</p></div>';
+            }
+
+
+            if (validarHorasCitas($this->input->post('HORA_INICIO'), $this->input->post('HORA_FIN')) == FALSE) {
+                $citaValida = FALSE;
+                $this->data['custom_message'] = '<div class="alert alert-error"><p>Error Hora Inicio - Hora Fin , verifique</p></div>';
+            }
+            //----------------- Validar Cita ---------------------------//                
+
+
+            if ($citaValida == TRUE) {
+                if ($this->cita_model->editarCita($cita, $idCita) == TRUE) {
+                    $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Actualizada Correctamente!!!</p></div>');
+                    $this->session->set_flashdata('citaId', $idCita);
+                    redirect(current_url());
+                } else {
+                    $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+                }
             }
         }
 
-        $this->session->set_flashdata('citaId', $idCita);
-
-        if (!$idCita) {
-            redirect('cita/verAgenda');
-        }
 
         $this->data['listaEspecialidades'] = $this->especialidad_model->listaEspecialidades();
         $this->data['listaEstadosCita'] = $this->estado_cita_model->listaEstadosCita();

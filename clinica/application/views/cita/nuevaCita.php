@@ -32,22 +32,10 @@
                                 <fieldset>
 
                                     <div class="control-group">                                         
-                                        <label class="control-label" for="start">Paciente *</label>
+                                        <label class="control-label" for="nombrePaciente">Paciente *</label>                                    
                                         <div class="controls">
-                                            <select class="form-control span6" name="ID_PACIENTE" id="ID_PACIENTE">
-                                                <option value="">--Seleccionar --</option>
-                                                <?php
-                                                if ($listaPacientes) {
-                                                    foreach ($listaPacientes as $paciente) {
-                                                        ?>
-                                                        <option value="<?php echo $paciente['ID_PACIENTE'] ?>" <?php echo ($paciente['ID_PACIENTE'] == set_value('ID_PACIENTE')) ? 'selected' : '' ?>>
-                                                            <?php echo $paciente['NOMBRE_PACIENTE'] ?>
-                                                        </option>    
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>	
+                                            <input type="text" class="span6" name="nombrePaciente" id="nombrePaciente" value="<?php echo set_value('nombrePaciente') ?>"/>
+                                            <input type="hidden" name="ID_PACIENTE" id="ID_PACIENTE" value="<?php echo set_value('ID_PACIENTE') ?>"/>
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->
 
@@ -86,7 +74,7 @@
                                     <div class="control-group">                                         
                                         <label class="control-label" for="FECHA">Fecha *</label>
                                         <div class="controls">
-                                            <input class="span3 disabled datetime" size="16" type="text" value="<?php echo set_value('FECHA', $citaDia); ?>" name="FECHA" id="FECHA" readonly="readonly">	
+                                            <input class="span3 disabled datetimeCita" size="16" type="text" value="<?php echo set_value('FECHA', $citaDia); ?>" name="FECHA" id="FECHA" readonly="readonly">	
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->    
 
@@ -140,6 +128,25 @@
 
 <script>
 
+    $('#nombrePaciente').autocomplete({
+        serviceUrl: '<?php echo base_url('paciente/buscarPacienteAuto') ?>',
+        minChars: 1,
+        type: 'post',
+        dataType: 'json',
+        onSelect: function(examen) {
+            $("#ID_PACIENTE").val(examen.data);
+        },
+        onInvalidateSelection: function() {
+        //alert("asd");    
+        $("#ID_PACIENTE").val("");
+        $("#nombrePaciente").val("");
+        },
+        triggerSelectOnValidInput:true,
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: 'Sin resultados',
+    });
+
+
     function listaEmpleados(destino, idEspecialidad) {
         $.ajax({
             data: {idEspecialidad: idEspecialidad},
@@ -162,8 +169,12 @@
 
     $("#ID_ESPECIALIDAD").change(function() {
         var idEspecialidad = $(this).val();
-        listaEmpleados("ID_EMPLEADO", idEspecialidad);
+        if (idEspecialidad) {
+            listaEmpleados("ID_EMPLEADO", idEspecialidad);
+        }
     });
+    $("#ID_ESPECIALIDAD").change();
+
 </script>
 
 

@@ -28,27 +28,15 @@
                             echo $this->session->flashdata('custom_message');
                             ?>
 
-                            <form action="<?php echo base_url('cita/editarCita') ?>" method="post" class="form-horizontal" id="formEditarCita">
+                            <form action="<?php echo base_url('cita/editarCita/'.  url_base64_encode($cita->ID_CITA)) ?>" method="post" class="form-horizontal" id="formEditarCita">
                                 <?php echo form_hidden('ID_CITA', $cita->ID_CITA) ?>
                                 <fieldset>
 
                                     <div class="control-group">                                         
                                         <label class="control-label" for="start">Paciente *</label>
                                         <div class="controls">
-                                            <select class="form-control span6" name="ID_PACIENTE" id="ID_PACIENTE">
-                                                <option value="">--Seleccionar --</option>
-                                                <?php
-                                                if ($listaPacientes) {
-                                                    foreach ($listaPacientes as $paciente) {
-                                                        ?>
-                                                        <option value="<?php echo $paciente['ID_PACIENTE'] ?>" <?php echo ($paciente['ID_PACIENTE'] == $cita->ID_PACIENTE) ? 'selected' : '' ?>>
-                                                            <?php echo $paciente['NOMBRE_PACIENTE'] ?>
-                                                        </option>    
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>	
+                                            <input type="text" class="span6" name="nombrePaciente" id="nombrePaciente" value="<?php echo $cita->NOMBRE_PACIENTE; ?>"/>
+                                            <input type="hidden" name="ID_PACIENTE" id="ID_PACIENTE" value="<?php echo $cita->ID_PACIENTE ?>"/>
                                         </div> <!-- /controls -->               
                                     </div> <!-- /control-group -->
 
@@ -163,6 +151,27 @@
 </div> <!-- /row -->
 
 <script>
+
+    $('#nombrePaciente').autocomplete({
+        serviceUrl: '<?php echo base_url('paciente/buscarPacienteAuto') ?>',
+        minChars: 1,
+        type: 'post',
+        dataType: 'json',
+        onSelect: function(examen) {
+            $("#ID_PACIENTE").val(examen.data);
+        },
+        onInvalidateSelection: function() {
+            //alert("asd");    
+            $("#ID_PACIENTE").val("");
+            $("#nombrePaciente").val("");
+        },
+        triggerSelectOnValidInput: true,
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: 'Sin resultados',
+    });
+
+
+
     $('#cancelarCita').click(function(e) {
         e.preventDefault();
         var idCita = "<?php echo $cita->ID_CITA; ?>"
@@ -198,8 +207,14 @@
             },
             success: function(data) {
                 $("#" + destino).html("");
+                var idEmpleado="<?php echo $cita->ID_EMPLEADO;?>";
                 $.each(data, function(i, item) {
-                    $("#" + destino).append("<option value='" + item.ID_EMPLEADO + "'>" + item.NOMBRE_EMPLEADO + "</option>")
+                    if(idEmpleado==item.ID_EMPLEADO){
+                        $("#" + destino).append("<option value='" + item.ID_EMPLEADO + "' selected='selected'>" + item.NOMBRE_EMPLEADO + "</option>")
+                    }else{
+                        $("#" + destino).append("<option value='" + item.ID_EMPLEADO + "'>" + item.NOMBRE_EMPLEADO + "</option>")
+                    }
+                    
                 })
             },
             error: function(data) {

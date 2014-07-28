@@ -101,8 +101,7 @@ $config = array(
             'field' => 'ID_EMPLEADO',
             'label' => 'MEDICO',
             'rules' => 'required|trim|xss_clean'
-        ),        
-        
+        ),
         array(
             'field' => 'FECHA',
             'label' => 'FECHA',
@@ -129,8 +128,18 @@ $config = array(
             'rules' => 'required|trim|xss_clean'
         ),
         array(
+            'field' => 'nombrePaciente',
+            'label' => 'PACIENTE',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
             'field' => 'ID_ESPECIALIDAD',
             'label' => 'ESPECIALIDAD',
+            'rules' => 'required|trim|xss_clean'
+        ),
+        array(
+            'field' => 'ID_EMPLEADO',
+            'label' => 'MEDICO',
             'rules' => 'required|trim|xss_clean'
         ),
         array(

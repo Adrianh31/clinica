@@ -13,17 +13,17 @@ class Servicios extends CI_Controller {
         $this->load->model('empleado_model');
     }
 
+    public function validarCita($idCita) {
+        if ($idCita) {
+            $resultado = $this->cita_model->validarCita($idCita);
+            if ($resultado) {
+                $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Validada Exitosamene!!!</p></div>');
+            }
+        }
+        redirect('servicios/agenda');
+    }
+
     public function agenda() {
-        /*
-          $this->load->library('email');
-          $this->email->from('noreply@clinicanazaret.website.org', 'Your Name');
-          $this->email->to('raulgq@gmail.com');
-          $this->email->subject('Email Test');
-          $this->email->message('Testing the email class.');
-          $this->email->send();
-          echo $this->email->print_debugger(); */
-
-
         $this->data['custom_message'] = '';
         $this->data['contenido'] = 'cita/verAgendaPublica';
         $this->load->view('template/publico/template', $this->data);
@@ -57,12 +57,34 @@ class Servicios extends CI_Controller {
                     'ID_ESTADO_CITA' => 1
                 );
 
-                if ($this->cita_model->nuevaCita($cita) == TRUE) {
-                    $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
-                    redirect('servicios/agenda');
-                } else {
-                    $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+
+                //----------------- Validar Cita -------------------------//
+                $citaValida = TRUE;
+                $medicoOcupado = $this->cita_model->esMedicoOcupado(set_value('ID_EMPLEADO'), $fechaInicio, 0);
+                if ($medicoOcupado == TRUE) {
+                    $citaValida = FALSE;
+                    $this->data['custom_message'] = '<div class="alert alert-error"><p>Medico no Disponible para este Horario</p></div>';
                 }
+
+                if (validarHorasCitas(set_value('HORA_INICIO'), set_value('HORA_FIN')) == FALSE) {
+                    $citaValida = FALSE;
+                    $this->data['custom_message'] = '<div class="alert alert-error"><p>Error Hora Inicio - Hora Fin , verifique</p></div>';
+                }
+                //----------------- Validar Cita ---------------------------//                             
+                //----------------- Guardar Cita -------------------------//
+                if ($citaValida == TRUE) {
+                    $idCita = $this->cita_model->nuevaCita($cita);
+                    if ($idCita > 0) {
+                        $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Cita Creada Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
+                        //send email
+                        $this->load->helper('send_email');
+                        sendValidarCita($this->cita_model->getCita($idCita), set_value('CORREO_ELECTRONICO'));
+                        redirect('servicios/agenda');
+                    } else {
+                        $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
+                    }
+                }
+                //----------------- Guardar Cita -------------------------//
             } else {
                 $this->data['custom_message'] = '<div class="alert alert-error"><p>El Correo Ingresado no Existe</p></div>';
             }
@@ -90,39 +112,63 @@ class Servicios extends CI_Controller {
 
             //buscar correo electronico
             $correoElectronico = $this->paciente_model->buscarCorreo(set_value('CORREO_ELECTRONICO'));
+
+
             if (!$correoElectronico) {
 
-                $paciente = array(
-                    'NOMBRE' => set_value('NOMBRE'),
-                    'APELLIDO' => set_value('APELLIDO'),
-                    'FECHA_NACIMIENTO' => set_value('FECHA_NACIMIENTO'),
-                    'SEXO' => set_value('SEXO'),
-                    'DIRECCION' => set_value('DIRECCION'),
-                    'OCUPACION' => set_value('OCUPACION'),
-                    'NOMBRE_PADRE' => set_value('NOMBRE_PADRE'),
-                    'RELIGION_PERTENECE' => set_value('RELIGION_PERTENECE'),
-                    'TELEFONO' => set_value('TELEFONO'),
-                    'CORREO_ELECTRONICO' => set_value('CORREO_ELECTRONICO')
-                );
+                //----------------- Validar Cita -------------------------//
+                $citaValida = TRUE;
+                $medicoOcupado = $this->cita_model->esMedicoOcupado($this->input->post('ID_EMPLEADO'), $fechaInicio, 0);
+                if ($medicoOcupado == TRUE) {
+                    $citaValida = FALSE;
+                    $this->data['custom_message'] = '<div class="alert alert-error"><p>Medico no Disponible para este Horario</p></div>';
+                }
 
-                if ($this->paciente_model->nuevoPaciente($paciente) == TRUE) {
+                if (validarHorasCitas(set_value('HORA_INICIO'), set_value('HORA_FIN')) == FALSE) {
+                    $citaValida = FALSE;
+                    $this->data['custom_message'] = '<div class="alert alert-error"><p>Error Hora Inicio - Hora Fin , verifique</p></div>';
+                }
+                //----------------- Validar Cita ---------------------------//    
 
-                    $idPaciente = $this->paciente_model->buscarCorreo(set_value('CORREO_ELECTRONICO'));
-                    $cita = array(
-                        'ID_PACIENTE' => $idPaciente->ID_PACIENTE,
-                        'ID_ESPECIALIDAD' => set_value('ID_ESPECIALIDAD'),
-                        'FECHA_INICIO' => $fechaInicio,
-                        'FECHA_FIN' => $fechaFin,
-                        'MOTIVO' => set_value('MOTIVO'),
-                        'ID_ESTADO_CITA' => 1
+
+                if ($citaValida == TRUE) {
+                    $paciente = array(
+                        'NOMBRE' => set_value('NOMBRE'),
+                        'APELLIDO' => set_value('APELLIDO'),
+                        'FECHA_NACIMIENTO' => set_value('FECHA_NACIMIENTO'),
+                        'SEXO' => set_value('SEXO'),
+                        'DIRECCION' => set_value('DIRECCION'),
+                        'OCUPACION' => set_value('OCUPACION'),
+                        'NOMBRE_PADRE' => set_value('NOMBRE_PADRE'),
+                        'RELIGION_PERTENECE' => set_value('RELIGION_PERTENECE'),
+                        'TELEFONO' => set_value('TELEFONO'),
+                        'CORREO_ELECTRONICO' => set_value('CORREO_ELECTRONICO')
                     );
 
-                    if ($this->cita_model->nuevaCita($cita) == TRUE) {
-                        $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Paciente Guardado Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
-                        redirect('servicios/agenda');
+
+                    if ($this->paciente_model->nuevoPaciente($paciente) == TRUE) {
+                        $idPaciente = $this->paciente_model->buscarCorreo(set_value('CORREO_ELECTRONICO'));
+                        $cita = array(
+                            'ID_PACIENTE' => $idPaciente->ID_PACIENTE,
+                            'ID_EMPLEADO' => $this->input->post('ID_EMPLEADO'),
+                            'FECHA_INICIO' => $fechaInicio,
+                            'FECHA_FIN' => $fechaFin,
+                            'MOTIVO' => set_value('MOTIVO'),
+                            'ID_ESTADO_CITA' => 1
+                        );
+
+
+                        $idCita = $this->cita_model->nuevaCita($cita);
+                        if ($idCita > 0) {
+                            $this->session->set_flashdata('custom_message', '<div class="alert alert-success"><p>Paciente Guardado Exitosamente!!! Favor confirmar Cita con el link enviado a su Correo Electronico</p></div>');
+                            //send email
+                            $this->load->helper('send_email');
+                            sendValidarCita($this->cita_model->getCita($idCita), set_value('CORREO_ELECTRONICO'));
+                            redirect('servicios/agenda');
+                        }
+                    } else {
+                        $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
                     }
-                } else {
-                    $this->data['custom_message'] = '<div class="alert"><p>An Error Occured.</p></div>';
                 }
             } else {
                 $this->data['custom_message'] = '<div class="alert alert-error"><p>El Correo Ingresado ya Existe</p></div>';

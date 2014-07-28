@@ -20,7 +20,7 @@ class Paciente_model extends CI_Model {
                                           INNER JOIN expediente AS ex
                                           ON ex.ID_PACIENTE=pac.ID_PACIENTE
                                           WHERE pac.ID_PACIENTE=?", array($idPaciente)
-                                        )->row();
+                    )->row();
         }
 
 
@@ -91,6 +91,24 @@ class Paciente_model extends CI_Model {
         return $pacientes;
     }
 
+    public function buscarPacienteAuto($filtro) {
+
+        $listaPacientes = $this->db->query("SELECT pac.ID_PACIENTE,CONCAT(per.NOMBRE,' ',per.APELLIDO) AS NOMBRE_PACIENTE 
+                          FROM paciente AS pac INNER JOIN persona AS per
+                          ON pac.ID_PACIENTE=per.ID_PERSONA
+                          WHERE CONCAT(per.NOMBRE,' ',per.APELLIDO) LIKE '%" . $this->db->escape_like_str($filtro) . "%'"
+                )->result_array();
+       $pacientes;
+        if ($listaPacientes) {
+            foreach ($listaPacientes as $paciente) {
+                $pacientes[] = array('value' => $paciente['NOMBRE_PACIENTE'],
+                                          'data' => $paciente['ID_PACIENTE']);
+            }
+        }
+        $lista = array("suggestions" => $pacientes);
+        return $lista;
+    }
+
     public function listaPacientes() {
         $pacientes = $this->db->query("SELECT pac.ID_PACIENTE, CONCAT(per.NOMBRE,' ',per.APELLIDO) AS NOMBRE_PACIENTE
                                        FROM paciente AS pac INNER JOIN persona AS per
@@ -99,13 +117,12 @@ class Paciente_model extends CI_Model {
         return $pacientes;
     }
 
-    
-    public function buscarCorreo($correo){
-        $correo=  $this->db->query("SELECT pac.ID_PACIENTE 
+    public function buscarCorreo($correo) {
+        $correo = $this->db->query("SELECT pac.ID_PACIENTE 
                                     FROM persona AS per INNER JOIN paciente AS pac
                                     ON per.ID_PERSONA=pac.ID_PACIENTE
-                                    WHERE per.CORREO_ELECTRONICO=?",array($correo))->row();
+                                    WHERE per.CORREO_ELECTRONICO=?", array($correo))->row();
         return $correo;
     }
-    
+
 }
